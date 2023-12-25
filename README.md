@@ -25,10 +25,11 @@ npm i
 ```
 Now you have all depencencies which are the system needs, move to step 2
 
-```
 2. Run the system
 ```
 npm run dev
 ```
 3. Test API
-```Coming soon```
+```
+Coming soon
+```
