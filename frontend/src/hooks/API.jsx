@@ -1,0 +1,1 @@
+export const baseURL = 'https://qldapm-api.onrender.com/'

@@ -1,0 +1,150 @@
+import React, { useState, useEffect } from 'react'
+import { Stack, Image, Button } from 'react-bootstrap'
+import Search from '../Search'
+import useChatroom from '../../hooks/useChatroom'
+import useAuth from '../../hooks/useAuth'
+import avatarIcon from '../../assets/images/uploadimage.png'
+import roomIcon from '../../assets/images/profile.png'
+import { parse, differenceInMinutes, differenceInHours } from 'date-fns'
+import { isImageFileNameValid } from '../../hooks/useCheck'
+//tab1 - tất cả tin nhắn
+
+function formatDateTime(timestamp){
+  const dateObject = parse(timestamp, 'dd/MM/yyyy HH:mm:ss', new Date());
+
+    // Calculate the time difference in minutes and hours
+    const minutesDifference = differenceInMinutes(new Date(), dateObject);
+    const hoursDifference = differenceInHours(new Date(), dateObject);
+
+    if(minutesDifference >= 60) {
+      return `${hoursDifference}h`
+    }
+    // Set the time difference state
+    return (`${minutesDifference}m`);
+}
+
+
+
+
+const AllRooms = () => {
+  const { user } = useAuth()
+  const {room, join_room, allchatrooms, fetchListChatrooms, fetch_Member_In_Room} = useChatroom()
+  const [tempRoom, setRoom] = useState(0)
+  
+  const handleJoinRoom = (joinroom) => {
+    const room_info = {
+      room_id: joinroom.room_id,
+      room_name: joinroom.room_name,
+      avatar: joinroom.avatar
+    }
+    join_room(room_info)
+    fetch_Member_In_Room(joinroom.room_id)
+    setRoom(joinroom.room_id)
+  }
+  useEffect(()=>{
+    fetchListChatrooms()
+    
+  }, [allchatrooms])
+  return (
+
+    <Stack style={{  paddingTop: "60px", width: '340px'}} className='h-100 border-black border-end bg-secondary-subtle'>
+      <Search />
+      <div title='All your chat rooms'
+       className=' border-bottom fw-bold color-primary-main bg-white'>
+        All messages
+       </div>
+      <div variant="pills" className="bottom-top overflow-y-auto">
+        {allchatrooms.length > 0 ?
+        <>
+        {allchatrooms.map((r, index) => (
+          <div className='bg-white' key={index}>
+            <Button 
+            className={r.room_id === tempRoom? 'd-flex border-0 rounded-3 bg-blue-light p-3 m-0 room' : 'd-flex border-0 rounded-3 bg-white p-3 m-0 room'}
+               style={{ maxWidth:"280px", minWidth: "270px"}}
+              onClick={() => handleJoinRoom( r)}
+            >
+              <Stack direction='horizontal' className='w-100'>
+                {
+                  r.users.length === 2
+                  ?
+                  <>
+                   {
+                    r.users.map((u)=>(
+                      <>
+                      {
+                        u.user_id !== user.user_id && <Image width={50} height={50} roundedCircle className='bg-black me-3' src={u.avatar} />
+                      }
+                      </>
+                    ))
+                   }
+                  </>
+                  :
+                  <>
+                  {
+                    isImageFileNameValid(r.avatar)
+                      ?
+                      <Image width={50} height={50} roundedCircle className='bg-black me-3' src={r.avatar} />
+                      :
+                      <Image width={50} height={50} roundedCircle className='bg-black me-3' src={roomIcon} />
+                  }
+                  </>
+                }
+                 
+                <Stack className='text-start' >
+                  <div className='color-primary-main fw-bold' style={{ fontSize: "15px" }}>
+                  {
+                  r.users.length === 2
+                  ?
+                  <>
+                   {
+                    r.users.map((u)=>(
+                      <>
+                      {
+                        u.user_id !== user.user_id && <span>{u.username}</span>
+                      }
+                      </>
+                    ))
+                   }
+                  </>
+                  :
+                  <>
+                  <span>{r.room_name}</span>
+                  </>
+                }
+                    
+                  </div>
+                  <div className='d-flex text-secondary' style={{fontSize: "14px",}}>
+                    {
+                      r.last_message.user.user_id === user.user_id ?
+                      <>You:<span className=" text-truncate text-center" style={{ maxWidth: "100px"}}>{"  "}{r.last_message.content}</span> </>
+                      :
+                      <span className=" text-truncate text-center" style={{ maxWidth: "100px"}}>{r.last_message.content}</span>
+                    }
+            
+                    {
+                      r.last_message.content !== '' 
+                      ?
+                      <div className='ms-2'>
+                      {'   '} . {' '}{formatDateTime(r.last_message.timestamp)}</div>
+                      :
+                      <div>Start chat with you friend</div>
+                    }
+                  </div>
+                </Stack>
+              </Stack>
+            </Button>
+          </div>
+        ))}
+        </>
+        : 
+        <>
+        <div className="py-3 bg-white"></div>
+        </>
+        }
+      </div>
+
+    </Stack>
+  )
+}
+
+export default AllRooms
