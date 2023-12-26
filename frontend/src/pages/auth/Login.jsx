@@ -48,6 +48,11 @@ function Login() {
         setAccount(value)
     };
 
+    const handleEnter = (e) => {
+        if (e.key === 'Enter') {
+            sendMessage(message);
+          }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         handleLogin(account.email, account.password)
@@ -86,6 +91,7 @@ function Login() {
                                 placeholder="Email or Phone Number..."
                                 name="email"
                                 onChange={handleInputChange}
+                                onKeyDown={handleEnter}
                                 required
                                 className='rounded-pill border-1 border-secondary fs-6 py-2 ps-3 pe-5 w-100'
                             />
@@ -103,6 +109,7 @@ function Login() {
                                 placeholder="Password..."
                                 name="password"
                                 onChange={handleInputChange}
+                                onKeyDown={handleEnter}
                                 required
                                 className='rounded-pill border-1 border-secondary fs-6 py-2 ps-3 pe-5 w-100'
                             />

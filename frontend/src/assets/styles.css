@@ -145,3 +145,25 @@ input.form-check-input{
   border: 1px solid rgb(153, 217, 234);
   font-size: 0.9rem;
 }
+
+
+/*EMOJI**/
+.EmojiPickerReact button.epr-emoji .epr-emoji-img {
+  max-height: 30px !important;
+  min-height: 30px !important;
+  max-width: 30px !important;
+  min-width: 30px !important;
+}
+
+.EmojiPickerReact .epr-preview{
+  
+}
+
+.epr-search-container{
+  margin: 0px !important;
+  width: 280px !important;
+}
+
+.EmojiPickerReact .Flex.FlexRow {
+  display: none !important;
+}

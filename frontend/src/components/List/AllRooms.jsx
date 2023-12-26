@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth'
 import avatarIcon from '../../assets/images/uploadimage.png'
 import roomIcon from '../../assets/images/profile.png'
 import { parse, differenceInMinutes, differenceInHours } from 'date-fns'
-import { isImageFileNameValid } from '../../hooks/useCheck'
+import { getNotAvatarUser, getNotUsername, isImageFileNameValid } from '../../hooks/useCheck'
 //tab1 - tất cả tin nhắn
 
 function formatDateTime(timestamp){
@@ -28,9 +28,8 @@ function formatDateTime(timestamp){
 
 const AllRooms = () => {
   const { user } = useAuth()
-  const {room, join_room, allchatrooms, fetchListChatrooms, fetch_Member_In_Room} = useChatroom()
+  const { join_room, allchatrooms, fetchListChatrooms, fetch_Member_In_Room} = useChatroom()
   const [tempRoom, setRoom] = useState(0)
-  
   const handleJoinRoom = (joinroom) => {
     const room_info = {
       room_id: joinroom.room_id,
@@ -41,6 +40,7 @@ const AllRooms = () => {
     fetch_Member_In_Room(joinroom.room_id)
     setRoom(joinroom.room_id)
   }
+
   useEffect(()=>{
     fetchListChatrooms()
     
@@ -68,20 +68,12 @@ const AllRooms = () => {
                   r.users.length === 2
                   ?
                   <>
-                   {
-                    r.users.map((u)=>(
-                      <>
-                      {
-                        u.user_id !== user.user_id && <Image width={50} height={50} roundedCircle className='bg-black me-3' src={u.avatar} />
-                      }
-                      </>
-                    ))
-                   }
+                  <Image width={50} height={50} roundedCircle className='bg-black me-3' src={getNotAvatarUser(r.users, user.user_id)} />
                   </>
                   :
                   <>
                   {
-                    isImageFileNameValid(r.avatar)
+                    !isImageFileNameValid(r.avatar)
                       ?
                       <Image width={50} height={50} roundedCircle className='bg-black me-3' src={r.avatar} />
                       :
@@ -97,13 +89,7 @@ const AllRooms = () => {
                   ?
                   <>
                    {
-                    r.users.map((u)=>(
-                      <>
-                      {
-                        u.user_id !== user.user_id && <span>{u.username}</span>
-                      }
-                      </>
-                    ))
+                    getNotUsername(r.users, user.user_id)
                    }
                   </>
                   :
@@ -116,7 +102,18 @@ const AllRooms = () => {
                   <div className='d-flex text-secondary' style={{fontSize: "14px",}}>
                     {
                       r.last_message.user.user_id === user.user_id ?
-                      <>You:<span className=" text-truncate text-center" style={{ maxWidth: "100px"}}>{"  "}{r.last_message.content}</span> </>
+                      <>You: {" "}
+                      <div className=" text-truncate text-center" style={{ maxWidth: "100px"}}>
+                        {"   "}
+                        {
+                          isImageFileNameValid(r.last_message.content)
+                          ?
+                          <span className='fw-bold'> image</span>
+                          :
+                          <>{r.last_message.content}</>
+                        }
+                      </div> 
+                      </>
                       :
                       <span className=" text-truncate text-center" style={{ maxWidth: "100px"}}>{r.last_message.content}</span>
                     }

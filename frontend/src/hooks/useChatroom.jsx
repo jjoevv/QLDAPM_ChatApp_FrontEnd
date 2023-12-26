@@ -52,8 +52,12 @@ const useChatroom = () => {
         if(result.data.list.length > 0)
         {
           dispatch(fetchMessagesInChatRoom(result.data.list))
+          
         }
-        else dispatch(fetchChatrooms([]))
+        else {
+          dispatch(fetchChatrooms([]))
+          dispatch(fetchMessagesInChatRoom([]))
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -150,7 +154,7 @@ const useChatroom = () => {
         });
   
         if (response.ok) {
-          //fetch_Member_In_Room(room_id)
+          fetch_Member_In_Room(state.room.room_id)
           
         } else {
           const errorData = await response.json();

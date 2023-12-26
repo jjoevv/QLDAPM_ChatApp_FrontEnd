@@ -14,7 +14,6 @@ export const loginRequest = () => {
 };
 
 export const loginSuccess = (userData) => {
-  console.log(userData)
   return {
     type: actionTypes.LOGIN_SUCCESS,
     payload: userData,

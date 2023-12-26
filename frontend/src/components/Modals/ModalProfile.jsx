@@ -12,8 +12,9 @@ const ModalProfile = ({ handleToggle, show }) => {
 
   const [isUpdate, setIsUpdate] = useState(false)
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState('');
+  const [previewImage, setPreviewImage] = useState(null)
+  const [path, setPath] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null)
 
   const [updateInput, setUpdateInput] = useState({
     username: user.username,
@@ -22,26 +23,22 @@ const ModalProfile = ({ handleToggle, show }) => {
   })
 
   
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if(file){
-      setSelectedFile(file);
-    }
-    else{
-      alert('Cannot upload image')
-    }
+  const handleImageChange =(e)=>{
+    setPreviewImage(e.target.files[0])
+    setSelectedImage(e.target.files[0])
+    
   }
 
+  
   const handleUpdate = () => {
-    console.log('selected ',selectedFile)
-    if (selectedFile) {
+    if (selectedImage) {
       const formData = new FormData();
-      formData.append('file', selectedFile);
+      formData.append('file', selectedImage);
 
       // Gọi API để tải ảnh lên và nhận URL
-      if (selectedFile) {
+      if (selectedImage) {
         const formData = new FormData();
-        formData.append('file', selectedFile);
+        formData.append('file', selectedImage);
   
         // Gọi API để tải ảnh lên và nhận URL
         fetch('https://qldapm-api.onrender.com/upload/image', {
@@ -52,7 +49,7 @@ const ModalProfile = ({ handleToggle, show }) => {
           .then((data) => {
             const path =`https://qldapm-api.onrender.com/${data.path}`
             alert(path)
-            setImageUrl(path);
+            setPath(path);
           })
           .catch((error) => {
             console.error('Error uploading image:', error);
@@ -60,7 +57,7 @@ const ModalProfile = ({ handleToggle, show }) => {
           });
       }
     }
-   update_Profile(updateInput.email, updateInput.username, updateInput.password, imageUrl)
+   update_Profile(updateInput.email, updateInput.username, updateInput.password, path)
     handleToggle()
   }
 
@@ -93,8 +90,9 @@ const ModalProfile = ({ handleToggle, show }) => {
               </Stack>
               <div className='position-relative'>
                 {
-                  imageUrl ?
-                    <Image width={100} height={100} roundedCircle src={imageUrl} />
+                  previewImage 
+                  ?
+                    <Image width={100} height={100} roundedCircle src={URL.createObjectURL(previewImage)} />
                     :
                     <>
                       {

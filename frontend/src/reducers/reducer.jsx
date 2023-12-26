@@ -82,7 +82,7 @@ const appReducer = (state, action) => {
         case actionTypes.JOIN_ROOM:
             return {
                 ...state,
-                room: action.payload
+                room: action.payload,
             }
         case actionTypes.GROUP_ROOM:
             return {

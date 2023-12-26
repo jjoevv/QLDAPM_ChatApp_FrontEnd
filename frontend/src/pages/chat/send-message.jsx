@@ -1,48 +1,74 @@
-import useAuth from '../../hooks/useAuth';
 import useChatroom from '../../hooks/useChatroom'
 
-import { InputGroup, Form, Image, Button } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
+import { Image, Button } from 'react-bootstrap';
+import React, {useState } from 'react';
+
+import EmojiPicker from 'emoji-picker-react'
+
+
+
 import SendIcon from './../../assets/images/send.png'
 import FileIcon from './../../assets/images/file.png'
 import ImageIcon from './../../assets/images/loadimage.png'
 import StickerIcon from './../../assets/images/sticker.png'
 import EmojiIcon from './../../assets/images/emoji.png'
 
-const SendMessage = ({socket}) => {
-  const {room} = useChatroom()
-  const [message, setMessage] = useState('');
-
-  const [selectedFile, setSelectedFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState('');
+const SendMessage = ({ socket }) => {
+  const { room } = useChatroom()
+  const [previewImages, setPreviewImages] = useState([])
+  const [previewFiles, setPreviewFiles] = useState([])
+  const [selectedImages, setSelectedImages] = useState([])
+  const [isEmoji, setEmoji] = useState(false)
+  const [message, setMessage] = useState('')
   const [isImage, setImage] = useState(false)
   const [isFile, setFile] = useState(false)
 
-    const handleFileChange = (event) => {
-      const file = event.target.files[0];
-      setSelectedFile(file);
-      setFile(true)
-    };
-    const handleImageChange = (event) => {
-      const file = event.target.files[0];
-      setSelectedFile(file);
-      setImage(true)
-    };
+  
+  const handleImageChange = (e) => {
+    setPreviewImages(e.target.files)
+    setSelectedImages(e.target.files)
+    setImage(true)
 
-    useEffect(()=>{
+  }
+  const handleFileChange = (e) => {
+    setPreviewFiles(e.target.files)
+    setSelectedImages(e.target.files)
+    setFile(true)
+  }
+  /**Preview */
+  const ShowPreviewFiles = () => {
 
-      const handleUploadImage = () => {
-        if (selectedFile) {
+    return [...previewFiles].map((file) => (
+      <div className='d-flex flex-row overflow-x-auto'>
+        <div className='p-2 rounded-3 bg-secondary mx-2'>{file.name}</div>
+      </div>
+    ))
+  }
+
+  const ShowpreviewImages = () => {
+    return [...previewImages].map((image) => (
+      <div className='d-flex flex-row overflow-x-auto'>
+        <Image className='rounded-2' src={URL.createObjectURL(image)} width='60px' />
+      </div>
+    ))
+  }
+
+  const apiUpload = () => {
+    if (selectedImages.length > 0) {
+      console.log(selectedImages)
+      for (const image of selectedImages) {
+        if (image) {
           const formData = new FormData();
-          formData.append('file', selectedFile);
-          
+          formData.append('file', image);
+
           // Gọi API để tải ảnh lên và nhận URL
           let URL = 'https://qldapm-api.onrender.com/upload/file'
-          if(isImage){
+          if (isImage) {
             URL = 'https://qldapm-api.onrender.com/upload/image'
           }
-          if(isFile){
+          if (isFile) {
             URL = 'https://qldapm-api.onrender.com/upload/file'
+
           }
           fetch(URL, {
             method: 'POST',
@@ -50,100 +76,117 @@ const SendMessage = ({socket}) => {
           })
             .then((response) => response.json())
             .then((data) => {
+              
               const path = `https://qldapm-api.onrender.com/${data.path}`
-              console.log(path)
-              setMessage(path);
+              
+              sendMessage(path)
             })
             .catch((error) => {
               console.error('Error uploading image:', error);
             });
         }
-        console.log(message)
-        setMessage('')
-      };
-
-      
-      handleUploadImage()
-    }, [isImage])
-  //GUI MESSAGE
-  const handleEnter = (e) =>{
-    if (e.key === 'Enter') {
-      // Gọi hàm xử lý gửi tin nhắn ở đây (ví dụ: sendMessage())
-     
-      console.log('gui di', message)
-      sendMessage();
-      setImage(false)
+      }
+    }
+    else {
+      console.log('GUI MESSAGE')
+      sendMessage(message)
     }
   }
-  const sendMessage = () => {
-    if (message !== '') {
-      console.log('gui den:', room.room_id)
-      const msg = {
-        content: message,
-        room_id: room.room_id
-      }
-      
-      socket.emit('message_text', msg)
-      setMessage('');
-      setImage(false)
-    }
+
+
+  /** Emoji*/
+
+  const handleEmojiSelect = (emoji) => {
+    setMessage((prevMessage) => prevMessage + emoji.emoji);
   };
 
+  /**SendMessage */
+  const handleEnter = (e) => {
+    if (e.key === 'Enter') {
+      sendMessage(message);
+    }
+  }
+  const sendMessage = (content) => {
+    if (content !== '') {
+      const msg = {
+        content: content,
+        room_id: room.room_id,
+      }
+      socket.emit('message_text', msg)
+
+      console.log('MESSGAE', msg)
+    }
+    setMessage('')
+    setPreviewImages([])
+    setPreviewFiles([])
+    setFile(false)
+    setImage(false)
+  }
+
   return (
-    <div className='footer border-top w-100 border-end border-1 border-light-subtle my-1 py-1 '>
+    <div className='footer border-top w-100 border-end border-1 border-light-subtle my-1 py-2 '>
+
+      {/**Footer */}
+
       
-    {/**Footer */}
-    {
-          isImage || isFile
-          &&
-          <div className='rounded-2'>
-            <img src={imageUrl} style={{ maxWidth: '55%' }} />
-          </div>
-        }
-      <InputGroup className="">
-        <InputGroup.Text className='bg-transparent border-0'><Image src={FileIcon} sizes='sm' width={30} />
+      <div className="d-flex overflow-x-auto px-3 mb-2">
+        {ShowpreviewImages()}
+        {ShowPreviewFiles()}
+        <div style={{zIndex: '1'}} className='position-absolute'>{isEmoji && <div ><EmojiPicker height={300} onEmojiClick={handleEmojiSelect} /></div>}</div>    
+      </div>
+
+      <div className='d-flex align-items-center'>
+
         <div>
-                  <input
-                    type="file"
-                    id='custom-file-input'
-                    style={{ display: 'none', visibility: 'none' }}
-                    onChange={handleFileChange}
-                  />
-                  <label id="custom-file-input" htmlFor="custom-file-input">
-                    <Image src={FileIcon} width={40} className=" p-2" />
-                  </label>
-                </div>
-        </InputGroup.Text>
-        <InputGroup.Text className='bg-transparent border-0'>
-          <div>
-                  <input
-                    type="file"
-                    id='custom-file-input'
-                    style={{ display: 'none', visibility: 'none' }}
-                    onChange={handleImageChange}
-                  />
-                  <label id="custom-file-input" htmlFor="custom-file-input">
-                    <Image src={ImageIcon} width={40} className=" p-2" />
-                  </label>
-                </div>
-          
-        </InputGroup.Text>
-        
-        
-       
-        <Form.Control
+          <input
+            type="file"
+            multiple
+
+            id="file-input"
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+          <label htmlFor="file-input" className="custom-file-upload">
+            <Image src={FileIcon} width={40} className=" p-2" />
+          </label>
+
+        </div>
+        <div>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            id="image-input"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+          <label htmlFor="image-input" >
+            <Image src={ImageIcon} width={40} className=" p-2" />
+          </label>
+
+        </div>
+        <Button className="bg-transparent border-0" onClick={()=>setEmoji(!isEmoji)}>
+          <Image src={EmojiIcon} width={25} />
+        </Button>
+        <Button className="bg-transparent border-0">
+          <Image src={StickerIcon} width={24} />
+        </Button>
+        <input
           placeholder="Aa"
-          className='rounded-pill p-2 mx-2 border-1 border-secondary'
+          className='rounded-pill p-2 mx-2 border-1 border-secondary w-100 form-control-sm'
           autoComplete='off'
-          value={!isImage ? message : ''}
+          value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleEnter}
           name="input"
+          type='text'
         />
-        <Button onClick={sendMessage} className='bg-transparent border-0'>
-          <Image src={SendIcon} sizes='sm' width={30} />
-        </Button>
-      </InputGroup>
+
+        
+        <button onClick={apiUpload} className='border-0'>
+          <Image src={SendIcon} width={25} />
+        </button>
+      </div>
     </div>
   );
 };

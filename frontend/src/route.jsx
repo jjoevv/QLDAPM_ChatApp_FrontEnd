@@ -8,7 +8,8 @@ import MainLayout from "./layout/MainLayout";
 import AllRooms from "./components/List/AllRooms";
 import AllFriends from "./components/List/AllFriends";
 import Setting from "./components/List/Setting";
-import TaoTest from "./test";
+import MyTest from "./test";
+
 
 const authPage = [
   { path: 'messages', element: <AllRooms /> },

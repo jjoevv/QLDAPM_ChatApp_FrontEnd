@@ -17,14 +17,14 @@ import deleteIcon from '../assets/images/deny.png'
 
 import ModalConfirmDelete from './Modals/ModalLeaveRoom'
 
-const RoomInfo = ({room}) => {
+const RoomInfo = () => {
   const { user } = useAuth()
-  const { group_room, fetch_Member_In_Room, } = useChatroom()
+  const { room, group_room, fetch_Member_In_Room, } = useChatroom()
   const { listFriends, listSends, sendRequest, unFriend } = useFriends()
-
   const user_in_room = group_room.find(item => item.user_id !== user.user_id);
 
   const [isSend, setSend] = useState(false)
+
   const handleSendRequest = (id) => {
     sendRequest(id)
     setSend(!isSend)
@@ -41,13 +41,14 @@ const RoomInfo = ({room}) => {
 
   const [showConfirm, setShowConfirm] = useState(false)
   const [deleteID, setDeleteID] = useState(null)
+
   const handleChooseDelete = (id) => {
     setShowConfirm(true)
     setDeleteID(id)
   }
   useEffect(() => {
     fetch_Member_In_Room(room.room_id)
-  }, [])
+  }, [room, group_room])
   return (
     <div className='h-100 w-100 d-flex flex-column my-5 pt-5 align-items-center'>
       {
@@ -78,7 +79,7 @@ const RoomInfo = ({room}) => {
                     <ButtonGroup className=' w-100  pb-2'>
                       <Button className='w-50 me-3 rounded-pill py-2 px-3 bg-primary-dark border-0'>Mute</Button>
                       <Button
-                        onClick={() => unFriend(user_in_room.user_id)}
+                        onClick={() => handleSendRequest(user_in_room.user_id)}
                         className='w-50  rounded-pill py-2 px-3 bg-blue-light color-primary-main border-0'>Unfriend</Button>
                     </ButtonGroup>
                     :
