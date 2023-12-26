@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Modal, Button, Row, Col, Form, Container, Image, Stack } from 'react-bootstrap'
 
 import AddIcon from './../../assets/images/add.png'
-import Avatar from './../../assets/images/avatar.jpg'
+import Avatar from './../../assets/images/profile.png'
 import useFriends from '../../hooks/useFriends'
+import { isImageFileNameValid } from '../../hooks/useCheck'
 
 export default function ModalAddFriend({ handleToggle, show }) {
     const { search, searchFriend, sendRequest } = useFriends()
@@ -72,8 +73,15 @@ export default function ModalAddFriend({ handleToggle, show }) {
                         {
                             Object.entries(searchFriend).length !== 0 &&
                             <Stack direction='horizontal'>
-                                <Stack direction='horizontal'gap={3}>
-                                    <Image src={Avatar} roundedCircle style={{ width: '40px', height: '40px' }} />
+                                <Stack direction='horizontal' gap={3}>
+                                    {
+                                        isImageFileNameValid(searchFriend.avatar)
+                                            ?
+                                            <Image src={searchFriend.avatar} roundedCircle style={{ width: '40px', height: '40px' }} />
+                                            :
+                                            <Image src={Avatar} roundedCircle style={{ width: '40px', height: '40px' }} />
+                                    }
+
                                     <div>
                                         <h5>{searchFriend.username}</h5>
                                     </div>

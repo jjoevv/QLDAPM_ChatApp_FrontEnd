@@ -34,10 +34,10 @@ if(!socket){
         room !== null ?
           <>
             <div className='mt-4' style={{ width: "850px" }}>
-              <Messages socket={socket} />
+              <Messages socket={socket} room={room}/>
               <SendMessage socket={socket} />
             </div>
-            <RoomInfo />
+            <RoomInfo room={room} />
           </>
           :
           <Default />

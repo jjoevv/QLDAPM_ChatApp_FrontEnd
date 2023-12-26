@@ -1,8 +1,6 @@
 import { Route, Routes, Navigate,  } from "react-router-dom";
 import React, {useEffect} from 'react'
 
-import Chat from "./pages/chat/Chat";
-import Home from "./pages/home/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 

@@ -3,7 +3,7 @@ import { ButtonGroup, Image, Button, Stack } from 'react-bootstrap'
 import useAuth from '../hooks/useAuth'
 import useChatroom from '../hooks/useChatroom'
 import ModalAddMember from '../components/Modals/ModalAddMember'
-import { userExistsInFriends, userExistsInSends, isImageFileNameValid, userExistInList, isNotUser } from '../hooks/useCheck'
+import { isImageFileNameValid, userExistInList } from '../hooks/useCheck'
 import ModalReport from './Modals/ModalReport'
 import useFriends from '../hooks/useFriends'
 
@@ -17,15 +17,18 @@ import deleteIcon from '../assets/images/deny.png'
 
 import ModalConfirmDelete from './Modals/ModalLeaveRoom'
 
-const RoomInfo = () => {
-
+const RoomInfo = ({room}) => {
   const { user } = useAuth()
-  const { group_room, room, fetch_Member_In_Room, } = useChatroom()
+  const { group_room, fetch_Member_In_Room, } = useChatroom()
   const { listFriends, listSends, sendRequest, unFriend } = useFriends()
 
   const user_in_room = group_room.find(item => item.user_id !== user.user_id);
 
-
+  const [isSend, setSend] = useState(false)
+  const handleSendRequest = (id) => {
+    sendRequest(id)
+    setSend(!isSend)
+  }
 
   const [isOpenAddFriend, setOpenAddfriend] = useState(false);
   const toggleOpenAddfriend = () => setOpenAddfriend(!isOpenAddFriend)
@@ -44,14 +47,14 @@ const RoomInfo = () => {
   }
   useEffect(() => {
     fetch_Member_In_Room(room.room_id)
-  }, [deleteID, room])
+  }, [])
   return (
-    <div className='h-100 w-100 d-flex flex-column mt-5 pt-5 align-items-center'>
+    <div className='h-100 w-100 d-flex flex-column my-5 pt-5 align-items-center'>
       {
         group_room.length === 2
           ?
           <>
-            <div className='d-flex flex-column align-items-center mb-0 h-25 w-100  mt-3'>
+            <div className='d-flex flex-column align-items-center mb-0 h-25 w-100 mt-5'>
               {
                 isImageFileNameValid(group_room.avatar)
                   ?
@@ -68,15 +71,15 @@ const RoomInfo = () => {
                 }
 
               </div>
-              <div className='border-bottom'>
+              <div className='mb-3'>
                 {
                   userExistInList(user_in_room.user_id, listFriends)
                     ?
-                    <ButtonGroup className=' w-100  pb-3'>
-                      <Button className='w-50 me-3 rounded-pill p-2 bg-primary-dark border-0'>Mute</Button>
+                    <ButtonGroup className=' w-100  pb-2'>
+                      <Button className='w-50 me-3 rounded-pill py-2 px-3 bg-primary-dark border-0'>Mute</Button>
                       <Button
                         onClick={() => unFriend(user_in_room.user_id)}
-                        className='w-50  rounded-pill p-2 bg-blue-light color-primary-main border-0'>Unfriend</Button>
+                        className='w-50  rounded-pill py-2 px-3 bg-blue-light color-primary-main border-0'>Unfriend</Button>
                     </ButtonGroup>
                     :
                     <>
@@ -85,15 +88,16 @@ const RoomInfo = () => {
                         ?
                         <span>Request send</span>
                         :
-                        <Button className='bg-primary-dark' onClick={() => sendRequest(user_in_room.user_id)}>
-                          <Image width={20} height={20} className='ms-1 px-5' src={addFriendIcon} />
+                        <Button className='bg-primary-dark border-0 ' onClick={() => sendRequest(user_in_room.user_id)}>
+                          <Image width={20} height={20} className='ms-1 px-5 bg-transparent' src={addFriendIcon} />
                         </Button>
                     }
                     </>
                 }
               </div>
             </div>
-            <div className='mt-5 w-75'>
+
+            <div className='mt-5 p-4 w-100 border-top '>
               <Stack className='w-100' gap={2}>
                 <h6 className='fw-bold text-center'>Personal information:</h6>
                 <div className='d-flex justify-content-between'>

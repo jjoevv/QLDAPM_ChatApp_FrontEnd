@@ -1,6 +1,6 @@
 
 import { useAppContext } from '../context/authContext';
-import { loginRequest, loginSuccess, loginFailure, logoutUser, registerRequest } from '../actions/actions';
+import { loginRequest, loginSuccess, loginFailure, logoutUser, registerRequest, updateProfile } from '../actions/actions';
 
 import { baseURL } from './API';
 import { useNavigate } from 'react-router-dom';
@@ -70,13 +70,13 @@ const useAuth = () => {
     navigate('/login')
   };
 
-  const updateProfile = async (email, username, password, avatar) => {
-    console.log({
+  const update_Profile = async (email, username, password, avatar) => {
+    const new_info = {
       email: email,
       username: username,
       password: password,
       avatar: avatar
-    })
+    }
     try {
       const response = await fetch(`${baseURL}user/${state.user.user_id}/update`, {
         method: 'POST',
@@ -89,10 +89,7 @@ const useAuth = () => {
       if (response.ok) {
         const userData = await response.json();
         alert('Update Success')
-        dispatch(loginSuccess({email: email,
-          username: username,
-          password: password,
-          avatar: avatar}))
+        dispatch(updateProfile(new_info))
       } else {
         const errorData = await response.json();
         alert(errorData.message)
@@ -135,7 +132,7 @@ const useAuth = () => {
     handleLogin,
     handleRegister,
     handleLogout,
-    updateProfile,
+    update_Profile,
     blockUser
   };
 };

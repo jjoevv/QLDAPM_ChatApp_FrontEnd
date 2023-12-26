@@ -5,7 +5,6 @@ import { Modal, Button, Form, Row, Col, InputGroup, Image } from 'react-bootstra
 import UploadingImage from './../../assets/images/uploadimage.png'
 import useFriends from '../../hooks/useFriends'
 import useChatroom from '../../hooks/useChatroom'
-import { isMessageasImage } from '../../hooks/useCheck'
 
 export default function ModalCreateGroup({ handleToggle, show }) {
   const { listFriends } = useFriends()

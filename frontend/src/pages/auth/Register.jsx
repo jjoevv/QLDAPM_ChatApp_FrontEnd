@@ -1,7 +1,6 @@
 
 import { useState, useContext } from "react"
 
-import Validation from "./Validation";
 import { Modal, Button, Form, Row, Col, Stack } from 'react-bootstrap'
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -19,15 +18,14 @@ function Register({handleToggle, show, setShow, setSuccess}) {
         password: "",
         confirmpassword: "",
     })
-    const [errors, setErrors] = useState({})
+    
 
     const handleInputChange = (event) => {
         const value = {...account, [event.target.name]: event.target.value}
         setAccount(value)    
     };
     const handleSignUp = async (e) => {
-        e.preventDefault();
-        setErrors(Validation(account))   
+        e.preventDefault(); 
         console.log(account)
         handleRegister(account.email, account.username, account.password)
         if(error){
@@ -51,18 +49,19 @@ function Register({handleToggle, show, setShow, setSuccess}) {
         </Modal.Header>
 
         <Modal.Body className=" mx-3 mb-3 ">
+            {error && <span className="text-danger">{error}</span>}
           <Form onSubmit={handleSignUp} className="w-75 mx-auto">
             {!isRegisterSuccess && <div style={{color: "red", fontSize: '14px', margin: '0px 0px 10px 10px'}}>{error}</div>}
             
                 <Form.Group>
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Fullname:</Form.Label>
                     <Form.Control type="text" value={account.username} name='username' onChange={handleInputChange} className='rounded-pill border-1 border-black p-0' size="sm"  required/>
-                    {errors && <div style={{color: "red", fontSize: '14px', margin: '0px 0px 10px 10px'}}>{errors.username}</div>}
+                    
                 </Form.Group>
                 <Form.Group>
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Email:</Form.Label>
                     <Form.Control type="text" name="email" onChange={handleInputChange}  rows={1}  className='rounded-pill border-1 border-black' size="sm" required/>
-                    {errors && <div style={{color: "red", fontSize: '14px', margin: '0px 0px 10px 10px'}}>{errors.email}</div>}
+                    
                 </Form.Group>
                 
                 <Form.Group>
@@ -75,12 +74,12 @@ function Register({handleToggle, show, setShow, setSuccess}) {
                          
                         className='rounded-pill border-1 border-black' 
                         size="sm" required/>
-                    {errors && <div style={{color: "red", fontSize: '14px', margin: '0px 0px 10px 10px'}}>{errors.password}</div>}
+                   
                 </Form.Group>
                 <Form.Group>
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Confirm Password:</Form.Label>
                     <Form.Control type="text" name="confirmpassword" onChange={handleInputChange}  rows={1}  className='rounded-pill border-1 border-black' size="sm" required/>
-                    {errors && <div style={{color: "red", fontSize: '14px', margin: '0px 0px 10px 10px'}}>{errors.corfirmpassword}</div>}
+                    
                 </Form.Group>
                     
 

@@ -99,6 +99,11 @@ const appReducer = (state, action) => {
                 ...state,
                 listMessages: action.payload
             }
+            case actionTypes.UPDATE_PROFILE:
+                return {
+                    ...state,
+                    user: action.payload
+                }
         default:
             return state;
     }

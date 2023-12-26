@@ -6,6 +6,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 import MyRoute from './route';
 import { AppContextProvider } from './context/authContext';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (

@@ -111,9 +111,9 @@ export const fetchMemberInRoom = (data) => {
   }
 }
 
-export const checkIsSingleRoom = (data) => {
+export const updateProfile = (data) => {
   return {
-    type: actionTypes.IS_SINGLE_ROOM,
+    type: actionTypes.UPDATE_PROFILE,
     payload: data
   }
 }

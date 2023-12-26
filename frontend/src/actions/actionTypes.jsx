@@ -25,3 +25,5 @@ export const GROUP_ROOM = 'GROUP_ROOM'
 export const SINGLE_ROOM = 'SINGLE_ROOM'
 export const GET_MESSAGES = 'GET_MESSAGES'
 export const CREATE_CHAT_ROOM = 'CREATE_CHAT_ROOM'
+
+export const UPDATE_PROFILE = 'UPDATE_PROFILE'

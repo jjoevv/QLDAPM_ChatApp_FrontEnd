@@ -47,10 +47,10 @@ const AllRooms = () => {
   }, [allchatrooms])
   return (
 
-    <Stack style={{  paddingTop: "60px", width: '340px'}} className='h-100 border-black border-end bg-secondary-subtle'>
+    <Stack style={{ width: '340px'}} className='h-100 border-secondary border-end bg-secondary-subtle'>
       <Search />
       <div title='All your chat rooms'
-       className=' border-bottom fw-bold color-primary-main bg-white'>
+       className='fw-bold color-primary-main bg-white border-bottom-primary-main'>
         All messages
        </div>
       <div variant="pills" className="bottom-top overflow-y-auto">

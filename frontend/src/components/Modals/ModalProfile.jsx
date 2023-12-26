@@ -5,10 +5,10 @@ import uploadIcon from '../../assets/images/uploadimage.png'
 import backIcon from '../../assets/images/back.png'
 import avatarIcon from '../../assets/images/profile.png'
 import useAuth from '../../hooks/useAuth'
-import { isMessageasImage } from '../../hooks/useCheck'
+import { isImageFileNameValid } from '../../hooks/useCheck'
 const ModalProfile = ({ handleToggle, show }) => {
 
-  const { user, updateProfile } = useAuth()
+  const { user, update_Profile } = useAuth()
 
   const [isUpdate, setIsUpdate] = useState(false)
 
@@ -24,14 +24,16 @@ const ModalProfile = ({ handleToggle, show }) => {
   
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(event.target.files[0]);
+    if(file){
+      setSelectedFile(file);
+    }
+    else{
+      alert('Cannot upload image')
+    }
   }
-  useEffect(() => {
-    console.log('Selected file:', selectedFile);
-    console.log('Selected file:', imageUrl);
-  }, [selectedFile, imageUrl]);
 
   const handleUpdate = () => {
+    console.log('selected ',selectedFile)
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);
@@ -58,7 +60,7 @@ const ModalProfile = ({ handleToggle, show }) => {
           });
       }
     }
-   updateProfile(updateInput.email, updateInput.username, updateInput.password, imageUrl)
+   update_Profile(updateInput.email, updateInput.username, updateInput.password, imageUrl)
     handleToggle()
   }
 
@@ -96,7 +98,7 @@ const ModalProfile = ({ handleToggle, show }) => {
                     :
                     <>
                       {
-                      isMessageasImage(user.avatar)
+                      isImageFileNameValid(user.avatar)
                       ?
                       <Image width={100} height={100} roundedCircle className='bg-white' src={user.avatar}/>
                       :
@@ -170,7 +172,7 @@ const ModalProfile = ({ handleToggle, show }) => {
 
               <div className='position-relative'>
               {
-                      isMessageasImage(user.avatar)
+                      isImageFileNameValid(user.avatar)
                       ?
                       <Image width={100} height={100} roundedCircle className='bg-white' src={user.avatar}/>
                       :

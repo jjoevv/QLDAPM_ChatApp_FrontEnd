@@ -25,9 +25,9 @@ const AllRequested = () => {
   }, [listRequests])
   return (
 
-    <Stack className='h-100 border-end bg-secondary-subtle'>
+    <Stack className='h-100 mh-100 border-end'>
       <div title='All your chat rooms'
-        className='pt-2  border-bottom fw-bold color-primary-main bg-white'>
+        className='fw-bold color-primary-main bg-white border-bottom-primary-main'>
         Friends Requested
       </div>
       <div variant="pills" className="bottom-top overflow-y-auto overflow-x-none">

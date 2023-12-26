@@ -1,7 +1,6 @@
-import { Button, Form, Row, Col, Container, Stack, InputGroup } from "react-bootstrap"
+import { Button, Form, Image, Container, Stack, InputGroup } from "react-bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
-import Image from "react-bootstrap/Image"
-import Validation from "./Validation";
+
 
 import { useState } from "react"
 import useAuth from "../../hooks/useAuth";
@@ -27,7 +26,9 @@ function Login() {
     //path
     const location = useLocation()
     const redirectPath = location.state?.path || '/'
-
+    if(user !== null){
+        navigate(redirectPath)
+    }
     //register open   
     const [isRegister, setisRegister] = useState(false);
     const toggleOpen = () => setisRegister(!isRegister);
@@ -37,7 +38,6 @@ function Login() {
     const [isSuccess, setSuccess] = useState(false);
     const toggleSuccess = () => setSuccess(!isSuccess);
 
-    const [errorMessage, setErrorMessage] = useState('')
 
     const [passwordShown, setPasswordShown] = useState(false);
 
@@ -50,7 +50,6 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrors(Validation(account))
         handleLogin(account.email, account.password)
         if(error){
             console.log(error)
@@ -77,7 +76,7 @@ function Login() {
 
                 <Form onSubmit={handleSubmit} className="w-25 text-center">
 
-                        <h2 style={{ color: "#1687A7" }} className="fw-bolder mt-3">Sign in</h2>
+                        <h2 className="fw-bolder mt-3 color-primary-main">Sign in</h2>
                         <InputGroup
                             label="Comments"
                             className="mt-3"
@@ -110,10 +109,6 @@ function Login() {
                             {errors && <p style={{ color: "red", fontSize: '13px', marginLeft: '10px' }}>{errors.password}</p>}
                         </InputGroup>
 
-                        {!isSuccess && <div style={{ color: "red", fontSize: '14px', margin: '0px 0px 10px 10px' }}>{errorMessage}</div>}
-                        {
-                            error && <div className="text-danger">{error}</div>
-                        }
                         <Form.Group className="mb-1">
                             <Link style={{ color: "#1687A7", fontWeight: "700" }}>Forgot Password?</Link>
                         </Form.Group>

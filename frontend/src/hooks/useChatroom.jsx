@@ -93,7 +93,6 @@ const useChatroom = () => {
           dispatch(fetchMessagesInChatRoom(result.data.list))
         }
         else {
-          
           dispatch(fetchChatrooms([]))
         }
       } catch (error) {
@@ -111,7 +110,7 @@ const useChatroom = () => {
           
         } else {
           const errorData = await response.json();
-          console.log(errorData)
+          alert(errorData)
         }
       } catch (error) {
         console.log(error)

@@ -12,7 +12,7 @@ import GroupIcon from "./../assets/images/group.png"
 import ModalAddFriend from './Modals/ModalAddFriend'
 import ModalCreateGroup from './Modals/ModalCreateGroup'
 import useFriends from '../hooks/useFriends'
-import { userExistsInFriends, userExistsInSends } from '../hooks/useCheck'
+import { userExistInList } from '../hooks/useCheck'
 
 export default function Search() {
 
@@ -112,12 +112,12 @@ export default function Search() {
             </Stack>
 
             <div xs={1} className='px-0 align-self-center h6 ms-auto' >
-              {userExistsInFriends(searchFriend.user_id, listFriends) ?
+              {userExistInList(searchFriend.user_id, listFriends) ?
                 <></>
                 :
                 <>
                   {
-                    userExistsInSends(searchFriend.user_id, listSends)
+                    userExistInList(searchFriend.user_id, listSends)
                       ?
                       <span>Requested send</span>
                       :
