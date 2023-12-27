@@ -13,9 +13,13 @@ import RegisterSuccess from "../../components/Modals/RegisterSuccess";
 import Logo from './../../assets/images/logo_large.png'
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import Social from "../../components/Social";
+import { useAppContext } from "../../context/authContext";
+import { registerRequest } from "../../actions/actions";
 
 function Login() {
+    const {dispatch} = useAppContext()
     const {error, user, handleLogin,} = useAuth()
+    
     const {saveToLocalStorage} = useLocalStorage()
     const navigate = useNavigate()
 
@@ -31,7 +35,10 @@ function Login() {
     //register open   
     const [isRegister, setisRegister] = useState(false);
     const toggleOpen = () => setisRegister(!isRegister);
-
+    const handleRegister = () => {
+        dispatch(registerRequest())
+        toggleOpen()
+    }
 
     //login success error?
     const [isSuccess, setSuccess] = useState(false);
@@ -41,7 +48,6 @@ function Login() {
     const [passwordShown, setPasswordShown] = useState(false);
 
     //inputform
-    const [errors, setErrors] = useState({})
     const handleInputChange = (event) => {
         const value = { ...account, [event.target.name]: event.target.value }
         setAccount(value)
@@ -56,12 +62,6 @@ function Login() {
         e.preventDefault();
         console.log(account)
         handleLogin(account.email, account.password)
-        if(error){
-            console.log(error)
-        }
-        
-        
-
     };
     return (
         <Container 
@@ -69,7 +69,7 @@ function Login() {
         style={{ backgroundColor: "#1687A7" }}>
             <Stack className="text-center d-flex justify-content-center align-items-center" style={{ color: "white" }}>
                
-                    <Image src={Logo} width={170} height={170} className="mt-4"/>
+                    <Image src={Logo} width={160} height={160} className="mt-4"/>
                     <h1 className="mt-3 fw-bold">CHAT APP</h1>
                     <h4 className="mt-3">LET'S HAVE A CHAT WITH YOUR FRIENDS</h4>
               
@@ -78,14 +78,12 @@ function Login() {
             <Stack className="bg-primary-gray mt-2 mb-2  h-100 rounded-circle d-flex align-items-center"
             style={{width:"110%", marginLeft: '-5%'}}>
                 
-
+           
                 <Form onSubmit={handleSubmit} className="w-25 text-center">
 
                         <h2 className="fw-bolder mt-3 color-primary-main">Sign in</h2>
-                        <InputGroup
-                            label="Comments"
-                            className="mt-3"
-                        >
+                        {error && <span className="text-danger">{error}</span>}
+                        <InputGroup className="my-3">
                             <Form.Control
                                 type="text"
                                 placeholder="Email or Phone Number..."
@@ -97,12 +95,8 @@ function Login() {
                             />
 
                         </InputGroup>
-                        {errors && <div style={{ color: "red", fontSize: '14px' }} className="mb-4">{errors.email}</div>}
-                        <InputGroup
-
-                            id="floatinglabel"
-                            label="Password"
-                        >
+                        
+                        <InputGroup id="floatinglabel" label="Password"  >
                             <Form.Control
                                 type={passwordShown ? "text" : "password"}
                                 id="password"
@@ -113,7 +107,7 @@ function Login() {
                                 required
                                 className='rounded-pill border-1 border-secondary fs-6 py-2 ps-3 pe-5 w-100'
                             />
-                            {errors && <p style={{ color: "red", fontSize: '13px', marginLeft: '10px' }}>{errors.password}</p>}
+                            
                         </InputGroup>
 
                         <Form.Group className="mb-1">
@@ -129,7 +123,7 @@ function Login() {
 
                         <Form.Group controlId="exampleForm.ControlTextarea1" className="fw-bold fs-7 ">
                             <Form.Label className="fw-bold">Not registered?
-                                <Link onClick={toggleOpen} style={{ color: "#1687A7", fontWeight: "700" }}> Sign up</Link>
+                                <Link onClick={handleRegister} style={{ color: "#1687A7", fontWeight: "700" }}> Sign up</Link>
                             </Form.Label>
                         </Form.Group>
                         <div className='d-flex flex-row align-items-center'>

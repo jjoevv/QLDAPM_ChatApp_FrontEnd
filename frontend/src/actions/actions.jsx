@@ -27,7 +27,7 @@ export const loginFailure = (error) => {
   };
 };
 
-export const registerRequest = (userData) => {
+export const registerRequest = () => {
   return {
     type: actionTypes.REGISTER_REQUESTE,
   }
