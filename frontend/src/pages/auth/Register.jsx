@@ -30,6 +30,8 @@ function Register({handleToggle, show, setShow, setSuccess}) {
         handleRegister(account.email, account.username, account.password)
         if(error){
             console.log(error)
+                    
+            setSuccess(false) 
         }
         else {
             setShow(false)          
@@ -49,22 +51,22 @@ function Register({handleToggle, show, setShow, setSuccess}) {
         </Modal.Header>
 
         <Modal.Body className=" mx-3 mb-3 ">
-            {error && <span className="text-danger">{error}</span>}
+          
           <Form onSubmit={handleSignUp} className="w-75 mx-auto">
-            {!isRegisterSuccess && <div style={{color: "red", fontSize: '14px', margin: '0px 0px 10px 10px'}}>{error}</div>}
+            {!isRegisterSuccess && <div style={{color: "red", fontSize: '14px', margin: '0px 0px 10px 10px'}} className="text-danger">{error}</div>}
             
-                <Form.Group>
+                <Form.Group className="mb-2">
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Fullname:</Form.Label>
-                    <Form.Control type="text" value={account.username} name='username' onChange={handleInputChange} className='rounded-pill border-1 border-black p-0' size="sm"  required/>
+                    <Form.Control type="text" value={account.username} name='username' onChange={handleInputChange} className='rounded-pill border-1 border-black p-2' size="sm"  required/>
                     
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className="mb-2">
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Email:</Form.Label>
-                    <Form.Control type="text" name="email" onChange={handleInputChange}  rows={1}  className='rounded-pill border-1 border-black' size="sm" required/>
+                    <Form.Control type="text" name="email" onChange={handleInputChange}  rows={1}  className='rounded-pill border-1 border-black p-2' size="sm" required/>
                     
                 </Form.Group>
                 
-                <Form.Group>
+                <Form.Group className="mb-2">
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Password:</Form.Label>
                     <Form.Control 
                         type={passwordShown ? "text" : "password"}                         
@@ -72,11 +74,11 @@ function Register({handleToggle, show, setShow, setSuccess}) {
                         onChange={handleInputChange}  
                         rows={1} 
                          
-                        className='rounded-pill border-1 border-black' 
+                        className='rounded-pill border-1 border-black p-2' 
                         size="sm" required/>
                    
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className="mb-2">
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Confirm Password:</Form.Label>
                     <Form.Control type="text" name="confirmpassword" onChange={handleInputChange}  rows={1}  className='rounded-pill border-1 border-black' size="sm" required/>
                     

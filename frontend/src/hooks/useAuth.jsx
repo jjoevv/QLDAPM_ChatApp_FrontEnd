@@ -8,12 +8,14 @@ import { useLocalStorage } from './useLocalStorage';
 
 const useAuth = () => {
   const { state, dispatch } = useAppContext();
-  const {saveToLocalStorage} = useLocalStorage()
+  const { saveToLocalStorage } = useLocalStorage()
   const navigate = useNavigate()
 
   const handleLogin = async (email, password) => {
-    dispatch(loginRequest());
-   try {
+    
+    if(state.user===null){
+      dispatch(loginRequest());
+      try {
         const response = await fetch(baseURL + 'user/sign-in', {
           method: 'POST',
           headers: {
@@ -24,12 +26,12 @@ const useAuth = () => {
   
         if (response.ok) {
           const userData = await response.json();
-          console.log(userData.data)
-          dispatch(loginSuccess(userData.data));  
+          console.log(userData)
+          dispatch(loginSuccess(userData.data));
           saveToLocalStorage('accessToken', JSON.stringify(userData.data))
           console.log(localStorage.getItem('accessToken'))
           navigate('/messages')
-          
+  
         } else {
           const errorData = await response.json();
           dispatch(loginFailure(errorData.message));
@@ -37,6 +39,10 @@ const useAuth = () => {
       } catch (error) {
         dispatch(loginFailure('An error occurred during login.'));
       }
+    }
+    else{
+      navigate('/messages')}
+    
   };
 
   const handleRegister = async (email, username, password) => {
@@ -48,7 +54,7 @@ const useAuth = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, username, password,  avatar}),
+        body: JSON.stringify({ email, username, password, avatar }),
       });
 
       if (response.ok) {
@@ -71,7 +77,7 @@ const useAuth = () => {
   };
 
   const update_Profile = async (email, username, password, avatar) => {
-    const new_info = {
+    const postData = {
       email: email,
       username: username,
       password: password,
@@ -81,27 +87,38 @@ const useAuth = () => {
       const response = await fetch(`${baseURL}user/${state.user.user_id}/update`, {
         method: 'POST',
         headers: {
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, username, password, avatar }),
+        body: JSON.stringify(postData),
       });
 
       if (response.ok) {
-        const userData = await response.json();
-        alert('Update Success')
+
+
+        const new_info = {
+          user_id: state.user.user_id,
+          email: email,
+          username: username,
+          password: password,
+          avatar: avatar
+        }
         dispatch(updateProfile(new_info))
+
+        alert('Update Success')
+        console.log("Update success", state.user)
       } else {
         const errorData = await response.json();
         alert(errorData.message)
-        
+
       }
     } catch (error) {
       dispatch(loginFailure('An error occurred during update.'));
     }
   }
-  
+
   const blockUser = async (reason) => {
-    
+
     try {
       const response = await fetch(baseURL + `friend/${state.user.user_id}/block`, {
         method: 'POST',

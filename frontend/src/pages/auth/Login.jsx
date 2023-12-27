@@ -26,9 +26,7 @@ function Login() {
     //path
     const location = useLocation()
     const redirectPath = location.state?.path || '/'
-    if(user !== null){
-        navigate(redirectPath)
-    }
+    
     //register open   
     const [isRegister, setisRegister] = useState(false);
     const toggleOpen = () => setisRegister(!isRegister);
@@ -55,6 +53,7 @@ function Login() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(account)
         handleLogin(account.email, account.password)
         if(error){
             console.log(error)
@@ -122,7 +121,7 @@ function Login() {
 
 
                         <Form.Group className="mb-2">
-                            <Button variant="primary" type="submit" style={{ backgroundColor: "#276678", width: "100px" }} className='rounded-pill fw-bold'>
+                            <Button onClick={handleSubmit} variant="primary" type="submit" style={{ backgroundColor: "#276678", width: "100px" }} className='rounded-pill fw-bold'>
                                 Sign in
                             </Button>
                         </Form.Group>
