@@ -99,7 +99,7 @@ const Messages = ({ socket }) => {
                     }
                   </>
                   :
-                  <ImageRenderer imageUrl={`${baseURL}/${msg.content}`}/>
+                  <ImageRenderer imageUrl={`${baseURL}/${msg.content}`} isSender={false}/>
               }
             </div>
           </>
@@ -133,7 +133,7 @@ const Messages = ({ socket }) => {
                     }
                   </>
                   :
-                  <ImageRenderer imageUrl={`${baseURL}/${msg.content}`}/>
+                  <ImageRenderer imageUrl={`${baseURL}/${msg.content}`} isSender={true}/>
               }
             </div>
 

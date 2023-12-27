@@ -7,8 +7,6 @@ import useAuth from '../hooks/useAuth'
 import ModalProfile from './Modals/ModalProfile'
 import Notification from './Notification'
 import { isImageFileNameValid } from '../hooks/useCheck'
-import { useLocalStorage } from '../hooks/useLocalStorage'
-import { Outlet, useNavigate } from 'react-router-dom'
 
 
 

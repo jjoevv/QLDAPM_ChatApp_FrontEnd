@@ -2,13 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { baseURL } from '../hooks/API';
 import { Image } from 'react-bootstrap';
-const ImageRenderer = ({ imageUrl }) => {
+const ImageRenderer = ({ imageUrl, isSender }) => {
   const [imageSrc, setImageSrc] = useState(imageUrl);
-  const [imageStyle, setImageStyle] = useState({});
-  
-
+  const [sender, setSender] =useState(isSender)
   return (
-    <div className='text-end'>
+    <div className={sender ? 'text-end' : ''}>
       {imageSrc ? 
         <Image src={imageUrl} width={250} rounded style={{ maxWidth: '70%', height: 'auto' }}/>
        : (
