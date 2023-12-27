@@ -54,7 +54,7 @@ const Messages = ({ socket }) => {
   useEffect(() => {
 
     socket.on('listen_message_text', (data) => {
-      console.log('nhan message', data);
+      
      setMessagesReceived((state) => [
         ...state, data
       ]);
@@ -84,9 +84,9 @@ const Messages = ({ socket }) => {
                       isSupportedFormat(`${baseURL}/${msg.content}`)
                         ?
                         <>
-                          <button className='bg-primary-main' onClick={() => handleDownload(`${baseURL}/${msg.content}`)}>
+                          <button className='bg-primary-dark text-white' onClick={() => handleDownload(`${baseURL}/${msg.content}`)}>
                             {getFilename(msg.content)}
-                            <Image src={downloadIcon} className='ms-2'/>
+                            <Image src={downloadIcon} className='ms-2' width={14}/>
                           </button>
                         </>
                         :

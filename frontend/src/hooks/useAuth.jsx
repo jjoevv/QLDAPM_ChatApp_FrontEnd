@@ -27,11 +27,9 @@ const useAuth = () => {
   
         if (response.ok) {
           const userData = await response.json();
-          console.log(userData)
           dispatch(loginSuccess(userData.data));
 
           saveToLocalStorage('accessToken', JSON.stringify(userData.data))
-          console.log(localStorage.getItem('accessToken'))
 
           navigate('/messages')
   
@@ -40,7 +38,7 @@ const useAuth = () => {
           dispatch(loginFailure(errorData.message));
         }
       } catch (error) {
-        dispatch(loginFailure('An error occurred during login.'));
+        dispatch(loginFailure('Something failed'));
       }
     }
     else{
@@ -69,7 +67,7 @@ const useAuth = () => {
         dispatch(loginFailure(errorData.message));
       }
     } catch (error) {
-      dispatch(loginFailure('An error occurred during login.'));
+      dispatch(loginFailure('Something failed'));
     }
   }
 
@@ -107,7 +105,6 @@ const useAuth = () => {
         dispatch(updateProfile(new_info))
 
         alert('Update Success')
-        console.log("Update success", state.user)
       } else {
         const errorData = await response.json();
         alert(errorData.message)
@@ -133,10 +130,9 @@ const useAuth = () => {
         alert('Say bye with this user')
       } else {
         const errorData = await response.json();
-        console.log(errorData)
       }
     } catch (error) {
-      console.log('An error occurred during login.');
+      console.log('Something failed');
     }
   }
 

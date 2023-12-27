@@ -40,7 +40,7 @@ const useChatroom = () => {
           const errorData = await response.json();
         }
       } catch (error) {
-        console.log(error)
+        
       }
     }
     const join_room = async (room) => {
@@ -83,7 +83,7 @@ const useChatroom = () => {
           const errorData = await response.json();
         }
       } catch (error) {
-        console.log(error)
+        
       }
     }
 
@@ -92,7 +92,7 @@ const useChatroom = () => {
       try {
         const response = await fetch(baseURL + `/message/${state.user.user_id}/list?page=1&limit=20&room_id=${room}`); // Thay đổi URL thành API bạn đang sử dụng
         const result = await response.json();
-        console.log('result messages', result)
+        
         if(result.data.list.length > 0)
         {
           dispatch(fetchMessagesInChatRoom(result.data.list))
@@ -117,7 +117,6 @@ const useChatroom = () => {
           const errorData = await response.json();
         }
       } catch (error) {
-        console.log(error)
       }
       
     }
@@ -140,7 +139,7 @@ const useChatroom = () => {
           const errorData = await response.json();
         }
       } catch (error) {
-        console.log(error)
+        
       }
     }
     const leave_Chat_room = async (id) => {

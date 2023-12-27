@@ -25,10 +25,10 @@ const useFriends = () => {
 
       } else {
         const errorData = await response.json();
-        console.log(errorData)
+        
       }
     } catch (error) {
-      console.log('Some thing wrong');
+      
     }
   }
 
@@ -46,15 +46,14 @@ const useFriends = () => {
       });
 
       if (response.ok) {
-        //const userData = await response.json();
         getListFriends(-1)
         getListFriends(1)
       } else {
         const errorData = await response.json();
-        console.log(errorData)
+        
       }
     } catch (error) {
-      console.log('An error occurred during login.');
+      console.log('Something failed');
     }
   }
 
@@ -77,10 +76,10 @@ const useFriends = () => {
         getListFriends(1)
       } else {
         const errorData = await response.json();
-        console.log(errorData)
+        
       }
     } catch (error) {
-      console.log('An error occurred during login.');
+      
     }
   }
 
@@ -99,10 +98,10 @@ const useFriends = () => {
         fetchFriends(-1)
       } else {
         const errorData = await response.json();
-        console.log(errorData)
+        
       }
     } catch (error) {
-      console.log('An error occurred during login.');
+      console.log('Something failed');
     }
   }
 
@@ -110,7 +109,7 @@ const useFriends = () => {
   const search = async (searchinput) => {
     let URL = ''
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    console.log(searchinput)
+    
     if (emailRegex.test(searchinput)) {
       URL = `${baseURL}/user/${state.user.user_id}/detail?email=${searchinput}`
     }
@@ -129,7 +128,7 @@ const useFriends = () => {
         dispatch(loginFailure(errorData.message));
       }
     } catch (error) {
-      console.log('Some thing wrong');
+      
     }
   }
 
@@ -147,13 +146,13 @@ const useFriends = () => {
 
       if (response.ok) {
         const userData = await response.json();
-        console.log(userData)
+        
       } else {
         const errorData = await response.json();
         
       }
     } catch (error) {
-      console.log('An error occurred during login.');
+      console.log('Something failed');
     }
   }
  

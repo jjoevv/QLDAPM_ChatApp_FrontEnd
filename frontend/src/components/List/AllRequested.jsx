@@ -7,16 +7,19 @@ import DenyIcon from './../../assets/images/deny.png'
 import useFriends from '../../hooks/useFriends'
 import useChatroom from '../../hooks/useChatroom'
 import useAuth from '../../hooks/useAuth'
+import { isUserIdExistInChatRoom } from '../../hooks/useCheck'
 
 //tab2 - tất cả bạn bè và lời mời kết bạn
 const AllRequested = () => {
   const {user} = useAuth()
   const {listRequests,getListFriends, acceptFriend, unAccept} = useFriends()
-  const {createChatroom} = useChatroom()
+  const {createChatroom, allchatrooms} = useChatroom()
   const handleAccept = (user_id) => {
     const users = [user_id, user.user_id]
     acceptFriend(user_id)
-    createChatroom(users, 'single room', 'default.png.')
+    if(!isUserIdExistInChatRoom(allchatrooms, user_id)){
+      createChatroom(users, 'single', '')
+    }
     
   }
   useEffect(()=>{

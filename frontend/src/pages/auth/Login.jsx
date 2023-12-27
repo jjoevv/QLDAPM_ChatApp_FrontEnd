@@ -60,7 +60,6 @@ function Login() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(account)
         handleLogin(account.email, account.password)
     };
     return (

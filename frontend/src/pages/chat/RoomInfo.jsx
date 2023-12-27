@@ -97,7 +97,7 @@ const RoomInfo = () => {
                     {
                       userExistInList(user_in_room.user_id, listSends)
                         ?
-                        <span>Request send</span>
+                        <span className='fw-bold'>Request send</span>
                         :
                         <Button className='border-0 bg-primary-main px-5' onClick={() => sendRequest(user_in_room.user_id)}>
                           <Image width={30} height={30} className='' src={addFriendIcon} />

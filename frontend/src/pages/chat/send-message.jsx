@@ -5,34 +5,48 @@ import React, {useState } from 'react';
 
 import EmojiPicker from 'emoji-picker-react'
 
-
-
 import SendIcon from './../../assets/images/send.png'
 import FileIcon from './../../assets/images/file.png'
 import ImageIcon from './../../assets/images/loadimage.png'
 import StickerIcon from './../../assets/images/sticker.png'
 import EmojiIcon from './../../assets/images/emoji.png'
+import { isSupportedFormat } from '../../hooks/useCheck';
 
 const SendMessage = ({ socket }) => {
   const { room } = useChatroom()
   const [previewImages, setPreviewImages] = useState([])
   const [previewFiles, setPreviewFiles] = useState([])
-  const [selectedImages, setSelectedImages] = useState([])
+  const [selecteds, setSelected] = useState([])
   const [isEmoji, setEmoji] = useState(false)
   const [message, setMessage] = useState('')
   const [isImage, setImage] = useState(false)
   const [isFile, setFile] = useState(false)
 
+  const [previewFilesError, setPreviewFilesErrors ] = useState([])
   
   const handleImageChange = (e) => {
     setPreviewImages(e.target.files)
-    setSelectedImages(e.target.files)
+    setSelected(e.target.files)
     setImage(true)
 
   }
   const handleFileChange = (e) => {
-    setPreviewFiles(e.target.files)
-    setSelectedImages(e.target.files)
+    const files = e.target.files
+
+    const newValidFiles = [];
+    const newInvalidFiles = [];
+
+    for(const file of files){
+      if(isSupportedFormat(file.name)){
+        newValidFiles.push(file)
+      }
+      else{
+        newInvalidFiles.push(file)
+      }
+    }
+    setPreviewFiles(newValidFiles)
+    setSelected(newValidFiles)
+    setPreviewFilesErrors(newInvalidFiles)
     setFile(true)
   }
   /**Preview */
@@ -40,7 +54,16 @@ const SendMessage = ({ socket }) => {
 
     return [...previewFiles].map((file) => (
       <div className='d-flex flex-row overflow-x-auto'>
-        <div className='p-2 rounded-3 bg-secondary mx-2'>{file.name}</div>
+        <div className='p-2 rounded-3 bg-primary-subtle mx-2 border border-info-subtle'>{file.name}</div>
+      </div>
+    ))
+  }
+
+  const ShowPreviewErrors = () => {
+
+    return [...previewFilesError].map((file) => (
+      <div className='d-flex flex-row overflow-x-auto'>
+        <div className='p-2 rounded-3 bg-light border border-danger mx-2'>{file.name}</div>
       </div>
     ))
   }
@@ -54,9 +77,9 @@ const SendMessage = ({ socket }) => {
   }
 
   const apiUpload = () => {
-    if (selectedImages.length > 0) {
-      console.log(selectedImages)
-      for (const image of selectedImages) {
+    if (selecteds.length > 0) {
+      console.log(selecteds)
+      for (const image of selecteds) {
         if (image) {
           const formData = new FormData();
           formData.append('file', image);
@@ -100,7 +123,7 @@ const SendMessage = ({ socket }) => {
   /**SendMessage */
   const handleEnter = (e) => {
     if (e.key === 'Enter') {
-      sendMessage(message);
+      apiUpload();
     }
   }
   const sendMessage = (content) => {
@@ -129,6 +152,7 @@ const SendMessage = ({ socket }) => {
       <div className="d-flex overflow-x-auto px-3 mb-2">
         {ShowpreviewImages()}
         {ShowPreviewFiles()}
+        {ShowPreviewErrors()}
         <div>{isEmoji && <div ><EmojiPicker height={300} onEmojiClick={handleEmojiSelect} /></div>}</div>    
       </div>
 
@@ -138,7 +162,6 @@ const SendMessage = ({ socket }) => {
           <input
             type="file"
             multiple
-
             id="file-input"
             onChange={handleFileChange}
             onKeyDown={handleEnter}

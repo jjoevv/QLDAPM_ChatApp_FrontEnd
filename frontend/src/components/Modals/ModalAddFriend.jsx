@@ -14,10 +14,9 @@ export default function ModalAddFriend({ handleToggle, show }) {
     const [isSearch, setSearch] = useState(false)
 
     const handleSendRequest = async (e) => {
-        setRequest(!isRequested)
         e.preventDefault();
+        setRequest(!isRequested)
         sendRequest(searchFriend.user_id)
-        console.log("id", searchFriend.user_id)
 
     }
     const handleInputChange = (e) => {
@@ -26,7 +25,6 @@ export default function ModalAddFriend({ handleToggle, show }) {
     const handleSearch = async () => {
         setSearch(true)
         search(searchinput)
-        console.log(searchFriend)
     }
     return (
         <Modal show={show}

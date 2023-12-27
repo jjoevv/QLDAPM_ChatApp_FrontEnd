@@ -7,7 +7,7 @@ export const useLocalStorage = () => {
 
   const saveToLocalStorage = (key, data) => {
     localStorage.setItem(key, data);
-    console.log(getFromLocalStorage(key))
+    
   };
 
   const getFromLocalStorage = (key) => {
@@ -24,9 +24,9 @@ export const useLocalStorage = () => {
   };
 
   const refreshLogin = () => {
-    console.log(getFromLocalStorage('accessToken'))
+    
     dispatch(loginSuccess(getFromLocalStorage('accessToken')))
-    console.log('after refresh state', state)
+    
   }
 
   return {

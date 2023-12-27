@@ -34,7 +34,7 @@ export const isSingleRoom = (list, user_id) => {
 }
 
 export const isSupportedFormat = (text) => {
-  const supportedFormats = /\.(txt|doc|excel|pdf)$/i;
+  const supportedFormats = /\.(txt|doc|docx|zip|rar|ppt|pptx|csv|xlsx|xls)$/i;
   return supportedFormats.test(text);
 };
 
@@ -56,4 +56,11 @@ export function downloadFileFromUrl(fileUrl, fileName) {
       URL.revokeObjectURL(url);
     })
     .catch(error => console.error('Error downloading file:', error));
+}
+
+export const isUserIdExistInChatRoom = (list, userIdToCheck) => {
+  // Kiểm tra xem userIdToCheck có tồn tại trong danh sách users của mỗi phòng hay không
+  const check = room.users.some(user => user.user_id === userIdToCheck);
+  alert(userIdToCheck)
+  alert(check)
 }

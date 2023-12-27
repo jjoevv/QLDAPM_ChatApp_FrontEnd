@@ -22,7 +22,6 @@ const AllFriend = () => {
     
     fetch_Member_In_Room(room.room_id)
     }
-    else(console.log(room))
 
     
   }

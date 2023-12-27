@@ -13,9 +13,10 @@ import ModalAddFriend from './Modals/ModalAddFriend'
 import ModalCreateGroup from './Modals/ModalCreateGroup'
 import useFriends from '../hooks/useFriends'
 import { userExistInList } from '../hooks/useCheck'
+import { useAppContext } from '../context/authContext'
 
 export default function Search() {
-
+  const {dispatch} = useAppContext()
   const { searchFriend, search, listFriends, listSends, sendRequest, getListFriends } = useFriends()
   const [isSearch, setSearch] = useState(false)
   const [searchinput, setInput] = useState("")
