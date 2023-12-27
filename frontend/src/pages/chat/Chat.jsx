@@ -8,24 +8,38 @@ import useAuth from '../../hooks/useAuth';
 import { io } from 'socket.io-client';
 import useChatroom from '../../hooks/useChatroom';
 import Default from './Default';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { useNavigate } from 'react-router-dom';
-
-import ImageMessageUploader from '../../components/ImageMessageUploader'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 let socket;
 const Chat = () => {
   const { user } = useAuth()
   const {room} = useChatroom()
+  const host = 'https://qldapm-api.onrender.com'
   
-  socket = io.connect('http://localhost:3000', {
-    extraHeaders: {
-      'user_id': user.user_id,
-    }
-  })
-  if (!socket) {
-    return <></>
-  }
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    // Kết nối với máy chủ socket
+    const newSocket = io(host, {
+      extraHeaders: {
+        'user_id': user.user_id,
+      }
+    });
+
+    // Lắng nghe sự kiện connect
+    newSocket.on('connect', () => {
+      console.log('Connected to socket server');
+    });
+
+    // Lưu trữ đối tượng socket trong state
+    setSocket(newSocket);
+
+    // Cleanup khi component unmount
+    return () => {
+      if (newSocket) {
+        newSocket.disconnect();
+      }
+    };
+  }, []);
   return (
     <Stack direction='horizontal' className='w-100 overflow-hidden'>
       {/*<div>
