@@ -50,13 +50,13 @@ export default function Search() {
     search(searchinput)
   }
   return (
-    <div className='w-100 bg-white p-2'>
+    <div className='w-100 bg-white p-2' style={{  maxWidth: "280px", minWidth: "270px"}}>
       <Stack direction='horizontal' className='ms-auto'>
 
         <InputGroup className='w-100'>
           <InputGroup.Text className="p-0 bg-body-tertiary rounded-start border-0">
             <Button onClick={handleSearch} className='border-0 p-0 bg-transparent mx-2 '>
-              <Image src={SearchIcon} width={15} className="p-0" />
+              <Image src={SearchIcon} width={14} className="p-0" />
             </Button>
           </InputGroup.Text>
 
@@ -69,12 +69,12 @@ export default function Search() {
             value={searchinput}
             name="searchinput"
           />
-          <Button onClick={toggleOpenAddfriend} style={{ backgroundColor: "white", }} className='border-0 p-0 m-1'>
-            <Image src={AddIcon} width={22} className="p-0 mx-1" />
+          <Button onClick={toggleOpenAddfriend}  className='border-0 p-0 m-1 bg-white'>
+            <Image src={AddIcon} width={20} className="p-0 mx-1" />
           </Button>
 
-          <Button onClick={toggleOpenGroupChat} style={{ backgroundColor: "white", }} className='border-0 p-0'>
-            <Image src={GroupIcon} width={22} className="p-0" />
+          <Button onClick={toggleOpenGroupChat}className='border-0 p-0 bg-white'>
+            <Image src={GroupIcon} width={20} className="p-0" />
           </Button>
         </InputGroup>
 
@@ -82,7 +82,7 @@ export default function Search() {
         {isOpenCreateGroup && <ModalCreateGroup handleToggle={toggleOpenGroupChat} show={isOpenCreateGroup} />}
       </Stack>
 
-      <Row>
+      <div>
         <Form.Label className='fw-bolder mt-3'>
           {isSearch ?
             <>
@@ -132,7 +132,7 @@ export default function Search() {
           </Stack>
         }
 
-      </Row>
+      </div>
     </div>
 
 

@@ -47,7 +47,7 @@ const AllRooms = () => {
   }, [allchatrooms])
   return (
 
-    <Stack style={{ width: '340px'}} className='h-100 border-secondary border-end bg-secondary-subtle'>
+    <Stack className='h-100 border-secondary overflow-hidden border-end bg-secondary-subtle' style={{ maxWidth:"280px", minWidth: "270px"}}>
       <Search />
       <div title='All your chat rooms'
        className='fw-bold color-primary-main bg-white border-bottom-primary-main'>
@@ -59,8 +59,9 @@ const AllRooms = () => {
         {allchatrooms.map((r, index) => (
           <div className='bg-white' key={index}>
             <Button 
+            key={index}
             className={r.room_id === tempRoom? 'd-flex border-0 rounded-3 bg-blue-light p-3 m-0 room' : 'd-flex border-0 rounded-3 bg-white p-3 m-0 room'}
-               style={{ maxWidth:"280px", minWidth: "270px"}}
+               
               onClick={() => handleJoinRoom( r)}
             >
               <Stack direction='horizontal' className='w-100'>
@@ -68,16 +69,16 @@ const AllRooms = () => {
                   r.users.length === 2
                   ?
                   <>
-                  <Image width={50} height={50} roundedCircle className='bg-black me-3' src={getNotAvatarUser(r.users, user.user_id)} />
+                  <Image width={40} height={40} roundedCircle className='bg-black me-3' src={getNotAvatarUser(r.users, user.user_id)} />
                   </>
                   :
                   <>
                   {
                     !isImageFileNameValid(r.avatar)
                       ?
-                      <Image width={50} height={50} roundedCircle className='bg-black me-3' src={r.avatar} />
+                      <Image width={40} height={40} roundedCircle className='bg-black me-3' src={r.avatar} />
                       :
-                      <Image width={50} height={50} roundedCircle className='bg-black me-3' src={roomIcon} />
+                      <Image width={40} height={40} roundedCircle className='bg-black me-3' src={roomIcon} />
                   }
                   </>
                 }
