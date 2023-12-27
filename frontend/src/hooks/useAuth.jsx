@@ -94,8 +94,6 @@ const useAuth = () => {
       });
 
       if (response.ok) {
-
-
         const new_info = {
           user_id: state.user.user_id,
           email: email,
@@ -110,7 +108,6 @@ const useAuth = () => {
       } else {
         const errorData = await response.json();
         alert(errorData.message)
-
       }
     } catch (error) {
       dispatch(loginFailure('An error occurred during update.'));

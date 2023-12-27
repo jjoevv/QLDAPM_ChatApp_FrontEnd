@@ -7,6 +7,8 @@ import useAuth from '../hooks/useAuth'
 import ModalProfile from './Modals/ModalProfile'
 import Notification from './Notification'
 import { isImageFileNameValid } from '../hooks/useCheck'
+import { useLocalStorage } from '../hooks/useLocalStorage'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 
 
@@ -18,6 +20,9 @@ const Header = () => {
   const [isOpenProfile, setOpenProfile] = useState(false);
   const toggleOpen = () => setOpenProfile(!isOpenProfile)
   
+  useEffect(()=>{
+    console.log(user)
+  }, [user])
   return (
   <div className='fixed-top'
   style={{marginLeft: "70px"}}>
@@ -66,6 +71,7 @@ const Header = () => {
         </div>
       </Stack>
       {isOpenProfile && <ModalProfile handleToggle={toggleOpen} show={isOpenProfile}/>}
+      <Outlet/>
   </div>
   )
 }

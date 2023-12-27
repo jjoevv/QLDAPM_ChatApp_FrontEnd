@@ -24,18 +24,22 @@ const ModalProfile = ({ handleToggle, show }) => {
 
   
   const handleImageChange =(e)=>{
-    setPreviewImage(e.target.files[0])
-    setSelectedImage(e.target.files[0])
+    const file = e.target.files[0]
+
+    if(file){
+      setSelectedImage(file)
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result)
+      };
+  
+      reader.readAsDataURL(file);
+    }
     
   }
 
   
   const handleUpdate = () => {
-    if (selectedImage) {
-      const formData = new FormData();
-      formData.append('file', selectedImage);
-
-      // Gọi API để tải ảnh lên và nhận URL
       if (selectedImage) {
         const formData = new FormData();
         formData.append('file', selectedImage);
@@ -48,17 +52,17 @@ const ModalProfile = ({ handleToggle, show }) => {
           .then((response) => response.json())
           .then((data) => {
             const path =`https://qldapm-api.onrender.com/${data.path}`
-            alert(path)
+            console.log(path)
             setPath(path);
+            
+            update_Profile(updateInput.email, updateInput.username, updateInput.password, path)
+            handleToggle()
           })
           .catch((error) => {
             console.error('Error uploading image:', error);
             alert(error)
           });
-      }
     }
-   update_Profile(updateInput.email, updateInput.username, updateInput.password, path)
-    handleToggle()
   }
 
   const handleInputChange = (event) => {
@@ -92,7 +96,7 @@ const ModalProfile = ({ handleToggle, show }) => {
                 {
                   previewImage 
                   ?
-                    <Image width={100} height={100} roundedCircle src={URL.createObjectURL(previewImage)} />
+                    <Image width={100} height={100} roundedCircle src={previewImage} />
                     :
                     <>
                       {
@@ -157,7 +161,7 @@ const ModalProfile = ({ handleToggle, show }) => {
                 <Button variant="secondary" onClick={() => handleToggle()} className='rounded-pill border-0 px-3 fw-bold color-blue-dark bg-primary-gray'>
                   Cancel
                 </Button>
-                <Button variant="primary" onClick={() => handleUpdate()} className='rounded-pill px-3 text-center bg-primary-dark text-white border-0 fw-bold '>
+                <Button variant="primary" onClick={handleUpdate} className='rounded-pill px-3 text-center bg-primary-dark text-white border-0 fw-bold '>
                   Update
                 </Button>
               </Stack>
