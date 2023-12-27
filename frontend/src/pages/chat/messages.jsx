@@ -3,9 +3,11 @@ import { useState, useEffect, useRef } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useChatroom from '../../hooks/useChatroom';
 import { parse, getHours, getMinutes, compareAsc } from 'date-fns';
-import { isImageFileNameValid, isSupportedFormat } from '../../hooks/useCheck';
+import { downloadFileFromUrl, getFilename, isImageFileNameValid, isSupportedFormat } from '../../hooks/useCheck';
 import { Image } from 'react-bootstrap';
-
+import ImageRenderer from '../../components/ImageRender';
+import { baseURL } from '../../hooks/API';
+import downloadIcon from '../../assets/images/download.png'
 // dd/mm/yyyy, hh:mm:ss
 function formatDateFromTimestamp(timestampString) {
   const dateObject = parse(timestampString, 'dd/MM/yyyy HH:mm:ss', new Date());
@@ -53,20 +55,18 @@ const Messages = ({ socket }) => {
 
     socket.on('listen_message_text', (data) => {
       console.log('nhan message', data);
-      setMessagesReceived((state) => [
+     setMessagesReceived((state) => [
         ...state, data
       ]);
       //dispatch(fetchMessagesInChatRoom(data))
-      //fetch_Messages_In_Room(room.room_id)
+      fetch_Messages_In_Room(room.room_id)
 
-      console.log('nhan message ne', messagesecieved)
     });
     // Remove event listener on component unmount
     return () => socket.off('listen_message_text');
   }, [ socket]);
 
   const handleDownload = (fileUrl) => {
-
     downloadFileFromUrl(fileUrl, getFilename(fileUrl))
   };
 
@@ -81,11 +81,12 @@ const Messages = ({ socket }) => {
                   ?
                   <>
                     {
-                      isSupportedFormat(msg.content)
+                      isSupportedFormat(`${baseURL}/${msg.content}`)
                         ?
                         <>
-                          <button className='bg-primary-main' onClick={() => handleDownload(msg.content)}>
+                          <button className='bg-primary-main' onClick={() => handleDownload(`${baseURL}/${msg.content}`)}>
                             {getFilename(msg.content)}
+                            <Image src={downloadIcon} className='ms-2'/>
                           </button>
                         </>
                         :
@@ -98,7 +99,7 @@ const Messages = ({ socket }) => {
                     }
                   </>
                   :
-                  <Image src={msg.content} rounded width={250} />
+                  <ImageRenderer imageUrl={`${baseURL}/${msg.content}`}/>
               }
             </div>
           </>
@@ -113,11 +114,12 @@ const Messages = ({ socket }) => {
                   ?
                   <>
                     {
-                      isSupportedFormat()
+                      isSupportedFormat(`${baseURL}/${msg.content}`)
                         ?
                         <>
-                          <button className='bg-primary-main' onClick={() => handleDownload(msg.content)}>
+                          <button className='bg-primary-dark text-white' onClick={() => handleDownload(`${baseURL}/${msg.content}`)}>
                             {getFilename(msg.content)}
+                            <Image src={downloadIcon} className='ms-2' width={14}/>
                           </button>
                         </>
                         :
@@ -131,7 +133,7 @@ const Messages = ({ socket }) => {
                     }
                   </>
                   :
-                  <Image src={msg.content} rounded width={250} />
+                  <ImageRenderer imageUrl={`${baseURL}/${msg.content}`}/>
               }
             </div>
 

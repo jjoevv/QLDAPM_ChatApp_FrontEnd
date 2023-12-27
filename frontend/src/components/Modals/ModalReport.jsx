@@ -8,19 +8,22 @@ import useAuth from '../../hooks/useAuth'
 const options = [
     {id: 1, label: 'Sending me spam messages'},
     {id: 2, label: 'Sending me inappropriate contents'},
-    {id: 3, label: 'Sending me spam messages'},
-    {id: 4, label: 'Sending me spam messages'},
-    {id: 5, label: 'Sending me spam messages'},
+    {id: 3, label: 'This is a fake account'},
+    {id: 4, label: 'I just want to block this user'},
+    {id: 5, label: 'Other problems...'},
 ]
-export default function ModalReport({handleToggle, show}) {
+export default function ModalReport({handleToggle, show, id}) {
   
   const {blockUser} = useAuth()
+  const {unFriend} = useFriends()
   const [chooseOptions, setChooseOptions] = useState([])
 
 
     const handleReport = async (e) => {
       e.preventDefault()
       blockUser(chooseOptions)
+      unFriend(id)
+      handleToggle()
     }
     const handleOptionChange = (item) => {
       if (chooseOptions.includes(item)) {
@@ -71,7 +74,7 @@ export default function ModalReport({handleToggle, show}) {
         </Modal.Body>
         
         <Modal.Footer className="d-flex justify-content-center">
-          <Button variant="secondary" onClick={handleToggle} className='rounded-pill border-0 px-4 fw-bold bg-danger'>
+          <Button variant="secondary" onClick={handleReport} className='rounded-pill border-0 px-4 fw-bold bg-danger'>
             Block and Send report
           </Button>
           

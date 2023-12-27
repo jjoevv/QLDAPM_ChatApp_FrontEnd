@@ -7,11 +7,11 @@ import useChatroom from './useChatroom'
 
 const useFriends = () => {
   const { state, dispatch } = useAppContext()
-  const {createChatroom} = useChatroom()
+
   //get list
   const getListFriends = async (type) => {
     try {
-      const response = await fetch(`${baseURL}friend/${state.user.user_id}/list?page=1&limit=20&type=${type}`)
+      const response = await fetch(`${baseURL}/friend/${state.user.user_id}/list?page=1&limit=20&type=${type}`)
 
       if (response.ok) {
         const userData = await response.json();
@@ -36,7 +36,7 @@ const useFriends = () => {
   const acceptFriend = async (user_id_sender) => {
     const type = 1
    try {
-      const response = await fetch(baseURL + `friend/${state.user.user_id}/accept`, {
+      const response = await fetch(baseURL + `/friend/${state.user.user_id}/accept`, {
         method: 'POST',
         headers: {
           'accept': 'application/json',
@@ -62,7 +62,7 @@ const useFriends = () => {
   const unAccept = async (user_id_sender) => {
     const type = 0
     try {
-      const response = await fetch(baseURL + `friend/${state.user.user_id}/accept`, {
+      const response = await fetch(baseURL + `/friend/${state.user.user_id}/accept`, {
         method: 'POST',
         headers: {
           'accept': 'application/json',
@@ -86,7 +86,7 @@ const useFriends = () => {
 
   const unFriend = async (user_id) => {
     try {
-      const response = await fetch(baseURL + `friend/${state.user.user_id}/accept`, {
+      const response = await fetch(baseURL + `/friend/${state.user.user_id}/delete`, {
         method: 'POST',
         headers: {
           'accept': 'application/json',
@@ -96,7 +96,7 @@ const useFriends = () => {
       });
 
       if (response.ok) {
-        alert('Success')
+        fetchFriends(-1)
       } else {
         const errorData = await response.json();
         console.log(errorData)
@@ -112,9 +112,9 @@ const useFriends = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     console.log(searchinput)
     if (emailRegex.test(searchinput)) {
-      URL = `${baseURL}user/${state.user.user_id}/detail?email=${searchinput}`
+      URL = `${baseURL}/user/${state.user.user_id}/detail?email=${searchinput}`
     }
-    else { URL = `${baseURL}user/${state.user.user_id}/detail?username=${searchinput}` }
+    else { URL = `${baseURL}/user/${state.user.user_id}/detail?username=${searchinput}` }
 
     
     try {
@@ -136,7 +136,7 @@ const useFriends = () => {
   //send request
   const sendRequest = async (user_id) => {
     try {
-      const response = await fetch(baseURL + `friend/${state.user.user_id}/request`, {
+      const response = await fetch(baseURL + `/friend/${state.user.user_id}/request`, {
         method: 'POST',
         headers: {
           'accept': 'application/json',

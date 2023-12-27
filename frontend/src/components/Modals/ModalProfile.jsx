@@ -13,7 +13,6 @@ const ModalProfile = ({ handleToggle, show }) => {
   const [isUpdate, setIsUpdate] = useState(false)
 
   const [previewImage, setPreviewImage] = useState(null)
-  const [path, setPath] = useState('')
   const [selectedImage, setSelectedImage] = useState(null)
 
   const [updateInput, setUpdateInput] = useState({
@@ -52,9 +51,6 @@ const ModalProfile = ({ handleToggle, show }) => {
           .then((response) => response.json())
           .then((data) => {
             const path =`https://qldapm-api.onrender.com/${data.path}`
-            console.log(path)
-            setPath(path);
-            
             update_Profile(updateInput.email, updateInput.username, updateInput.password, path)
             handleToggle()
           })
@@ -146,7 +142,7 @@ const ModalProfile = ({ handleToggle, show }) => {
                 <Form.Label className='fw-bold'>Password</Form.Label>
                 <Form.Control
                   type='password'
-                  placeholder='*******'s
+                  placeholder='*******'
                   name='email'
                   value={updateInput.password}
                   onChange={handleInputChange}

@@ -12,6 +12,7 @@ import RegisterSuccess from "../../components/Modals/RegisterSuccess";
 
 import Logo from './../../assets/images/logo_large.png'
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import Social from "../../components/Social";
 
 function Login() {
     const {error, user, handleLogin,} = useAuth()
@@ -68,7 +69,7 @@ function Login() {
         style={{ backgroundColor: "#1687A7" }}>
             <Stack className="text-center d-flex justify-content-center align-items-center" style={{ color: "white" }}>
                
-                    <Image src={Logo} width={170} height={170} className="mt-2"/>
+                    <Image src={Logo} width={170} height={170} className="mt-4"/>
                     <h1 className="mt-3 fw-bold">CHAT APP</h1>
                     <h4 className="mt-3">LET'S HAVE A CHAT WITH YOUR FRIENDS</h4>
               
@@ -135,9 +136,9 @@ function Login() {
                             <div style={{flex: 1, height: '0.5px', backgroundColor: 'gray'}} className="mb-3"/>
 
                             <div><p className=' mx-2 fw-bold'>Or sign in with</p></div>
-
                             <div style={{flex: 1, height: '1px', backgroundColor: 'gray'}} className="mb-3"/>
                         </div>
+                        <Social/>
                         <Register handleToggle={toggleOpen} show={isRegister} setShow={setisRegister} isSuccess={isSuccess} setSuccess={setSuccess} />
                         <RegisterSuccess handleToggle={toggleSuccess} show={isSuccess} />
                  

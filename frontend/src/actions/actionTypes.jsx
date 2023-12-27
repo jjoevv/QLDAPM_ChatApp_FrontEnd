@@ -7,10 +7,7 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
-export const SAVE_TO_LOCAL_STORAGE = 'SAVE_TO_LOCAL_STORAGE';
-
-export const SET_SOCKET = 'SET_SOCKET';
-
+export const SET_LOGGED_IN = 'SET_LOGGED_IN';
 
 export const SEARCH_FRIEND = 'SEARCH_FRIEND'
 

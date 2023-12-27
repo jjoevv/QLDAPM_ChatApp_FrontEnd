@@ -24,8 +24,6 @@ function formatDateTime(timestamp){
 }
 
 
-
-
 const AllRooms = () => {
   const { user } = useAuth()
   const { join_room, allchatrooms, fetchListChatrooms, fetch_Member_In_Room} = useChatroom()
@@ -43,12 +41,13 @@ const AllRooms = () => {
 
   useEffect(()=>{
     fetchListChatrooms()
-    
   }, [allchatrooms])
   return (
 
     <Stack className='h-100 border-secondary overflow-hidden border-end bg-secondary-subtle' style={{ maxWidth:"280px", minWidth: "270px"}}>
-      <Search />
+      <div className='pt-5'>
+        <Search />
+      </div>
       <div title='All your chat rooms'
        className='fw-bold color-primary-main bg-white border-bottom-primary-main'>
         All messages
@@ -60,7 +59,7 @@ const AllRooms = () => {
           <div className='bg-white' key={index}>
             <Button 
             key={index}
-            className={r.room_id === tempRoom? 'd-flex border-0 rounded-3 bg-blue-light p-3 m-0 room' : 'd-flex border-0 rounded-3 bg-white p-3 m-0 room'}
+            className={r.room_id === tempRoom? 'w-100 d-flex border-0 rounded-3 bg-blue-light p-3 m-0 room' : 'd-flex border-0 rounded-3 bg-white p-3 m-0 room'}
                
               onClick={() => handleJoinRoom( r)}
             >
@@ -74,7 +73,7 @@ const AllRooms = () => {
                   :
                   <>
                   {
-                    !isImageFileNameValid(r.avatar)
+                    isImageFileNameValid(r.avatar)
                       ?
                       <Image width={40} height={40} roundedCircle className='bg-black me-3' src={r.avatar} />
                       :

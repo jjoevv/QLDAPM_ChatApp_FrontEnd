@@ -15,7 +15,6 @@ const AllRequested = () => {
   const {createChatroom} = useChatroom()
   const handleAccept = (user_id) => {
     const users = [user_id, user.user_id]
-    alert(users)
     acceptFriend(user_id)
     createChatroom(users, 'single room', 'default.png.')
     
@@ -38,7 +37,7 @@ const AllRequested = () => {
             >
               <Stack direction='horizontal' className='w-100'>
                 <Image src='' width={50} height={50} roundedCircle className='bg-black me-3' />
-                <div className='color-primary-main fw-bold me-auto' style={{ fontSize: "15px" }}>
+                <div className='color-primary-main fw-bold me-5' style={{ fontSize: "15px" }}>
                   {user.username}
                 </div>
                 <ButtonGroup>

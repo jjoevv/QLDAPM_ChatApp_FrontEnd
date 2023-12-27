@@ -14,12 +14,10 @@ export const getNotAvatarUser = (list, id) => {
   const user = list.find(item => item.user_id !== id)
   return user.avatar
 }
-export const isImageFileNameValid = (fileName) => {
-
-  // baseURL= 'https://qldapm-api.onrender.com/';
-  if (fileName !== undefined) {
-
-    return fileName.includes(baseURL) ? true : false
+export const isImageFileNameValid = (imageUrl) => {
+  if(imageUrl !== undefined){
+    const imageRegex = /\.(png|jpeg|jpg)$/i;
+    return imageRegex.test(imageUrl)
   }
   return false
 }

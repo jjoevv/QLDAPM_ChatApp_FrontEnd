@@ -76,10 +76,7 @@ const SendMessage = ({ socket }) => {
           })
             .then((response) => response.json())
             .then((data) => {
-              
-              const path = `https://qldapm-api.onrender.com/${data.path}`
-              
-              sendMessage(path)
+              sendMessage(data.path)
             })
             .catch((error) => {
               console.error('Error uploading image:', error);
@@ -113,7 +110,7 @@ const SendMessage = ({ socket }) => {
         room_id: room.room_id,
       }
       socket.emit('message_text', msg)
-
+      console.log(socket)
       console.log('MESSGAE', msg)
     }
     setMessage('')
@@ -132,7 +129,7 @@ const SendMessage = ({ socket }) => {
       <div className="d-flex overflow-x-auto px-3 mb-2">
         {ShowpreviewImages()}
         {ShowPreviewFiles()}
-        <div style={{zIndex: '1'}} className='position-absolute'>{isEmoji && <div ><EmojiPicker height={300} onEmojiClick={handleEmojiSelect} /></div>}</div>    
+        <div>{isEmoji && <div ><EmojiPicker height={300} onEmojiClick={handleEmojiSelect} /></div>}</div>    
       </div>
 
       <div className='d-flex align-items-center'>
@@ -144,6 +141,7 @@ const SendMessage = ({ socket }) => {
 
             id="file-input"
             onChange={handleFileChange}
+            onKeyDown={handleEnter}
             style={{ display: 'none' }}
           />
           <label htmlFor="file-input" className="custom-file-upload">
@@ -158,6 +156,7 @@ const SendMessage = ({ socket }) => {
             accept="image/*"
             id="image-input"
             onChange={handleImageChange}
+            onKeyDown={handleEnter}
             style={{ display: 'none' }}
           />
           <label htmlFor="image-input" >
@@ -183,7 +182,7 @@ const SendMessage = ({ socket }) => {
         />
 
         
-        <button onClick={apiUpload} className='border-0'>
+        <button onClick={apiUpload} className='border-0 bg-transparent'>
           <Image src={SendIcon} width={25} />
         </button>
       </div>

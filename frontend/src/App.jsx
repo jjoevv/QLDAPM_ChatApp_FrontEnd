@@ -3,16 +3,15 @@
 import './assets/styles.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
-
-import MyRoute from './route';
 import { AppContextProvider } from './context/authContext';
-import { BrowserRouter } from 'react-router-dom';
+import AppRoute from './route/AppRoute';
+import React from 'react';
 
 function App() {
   return (
-    <AppContextProvider >
-      <MyRoute />
-    </AppContextProvider>
+      <AppContextProvider >
+        <AppRoute />
+      </AppContextProvider>
   )
 }
 

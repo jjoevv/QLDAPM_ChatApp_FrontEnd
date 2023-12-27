@@ -2,9 +2,11 @@
 import { useAppContext } from '../context/authContext';
 import { loginRequest, loginSuccess, loginFailure, logoutUser, registerRequest, updateProfile } from '../actions/actions';
 
-import { baseURL } from './API';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from './useLocalStorage';
+import { baseURL } from './API';
+
+
 
 const useAuth = () => {
   const { state, dispatch } = useAppContext();
@@ -12,11 +14,10 @@ const useAuth = () => {
   const navigate = useNavigate()
 
   const handleLogin = async (email, password) => {
-    
     if(state.user===null){
       dispatch(loginRequest());
       try {
-        const response = await fetch(baseURL + 'user/sign-in', {
+        const response = await fetch(baseURL + '/user/sign-in', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -28,8 +29,10 @@ const useAuth = () => {
           const userData = await response.json();
           console.log(userData)
           dispatch(loginSuccess(userData.data));
+
           saveToLocalStorage('accessToken', JSON.stringify(userData.data))
           console.log(localStorage.getItem('accessToken'))
+
           navigate('/messages')
   
         } else {
@@ -47,9 +50,9 @@ const useAuth = () => {
 
   const handleRegister = async (email, username, password) => {
     dispatch(registerRequest())
-    const avatar = 'avatar.png'
+    const avatar = ''
     try {
-      const response = await fetch(baseURL + 'user/create', {
+      const response = await fetch(baseURL + '/user/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +87,7 @@ const useAuth = () => {
       avatar: avatar
     }
     try {
-      const response = await fetch(`${baseURL}user/${state.user.user_id}/update`, {
+      const response = await fetch(`${baseURL}/user/${state.user.user_id}/update`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -117,7 +120,7 @@ const useAuth = () => {
   const blockUser = async (reason) => {
 
     try {
-      const response = await fetch(baseURL + `friend/${state.user.user_id}/block`, {
+      const response = await fetch(baseURL + `/friend/${state.user.user_id}/block`, {
         method: 'POST',
         headers: {
           'accept': 'application/json',
@@ -127,8 +130,7 @@ const useAuth = () => {
       });
 
       if (response.ok) {
-        const userData = await response.json();
-        console.log(userData)
+        alert('Say bye with this user')
       } else {
         const errorData = await response.json();
         console.log(errorData)
@@ -142,7 +144,7 @@ const useAuth = () => {
     user: state.user,
     loading: state.loading,
     error: state.error,
-    socket: state.socket,
+    isLoggedIn: state.isLoggedIn,
     handleLogin,
     handleRegister,
     handleLogout,

@@ -6,11 +6,13 @@ import useAuth from '../../hooks/useAuth'
 const ModalLeaveRoom = ({ handleToggle, show, id }) => {
     const {user} = useAuth()
     
-    const { leave_Chat_room } = useChatroom()
+    const { leave_Chat_room, join_room } = useChatroom()
 
     const handleConfirm = () => {
         leave_Chat_room(id)
-
+        if(id === user.user_id){
+            join_room(null)
+        }
         handleToggle()
     }
     return (
@@ -25,7 +27,7 @@ const ModalLeaveRoom = ({ handleToggle, show, id }) => {
             <Modal.Body>
                 <span className='text-danger'>
                     {
-                        id === user.user_id
+                        id !== user.user_id
                         ? <span>Are you sure want to delete this user from group?</span>
                         : <span>Are you sure wanna leave?</span>
                     }

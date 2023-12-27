@@ -1,7 +1,7 @@
 import * as actionTypes from './../actions/actionTypes'
 const appReducer = (state, action) => {
     switch (action.type) {
-        case actionTypes.SAVE_TO_LOCAL_STORAGE:
+        case actionTypes.SET_LOGGED_IN:
             return {
                 ...state,
                 user: action.payload
@@ -16,6 +16,7 @@ const appReducer = (state, action) => {
             return {
                 ...state,
                 user: action.payload,
+                isLoggedIn: true,
                 loading: false,
                 error: null,
             };
@@ -31,6 +32,7 @@ const appReducer = (state, action) => {
                 user: null,
                 loading: false,
                 error: null,
+                isLoggedIn: false
             };
 
         case actionTypes.REGISTER_REQUESTE:
@@ -102,7 +104,8 @@ const appReducer = (state, action) => {
             case actionTypes.UPDATE_PROFILE:
                 return {
                     ...state,
-                    user: action.payload
+                    user: action.payload,
+                    isLoggedIn: true,
                 }
         default:
             return state;

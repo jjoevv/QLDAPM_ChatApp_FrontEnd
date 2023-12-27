@@ -18,7 +18,9 @@
 .bg-primary-main-hover {
   background-color: aquamarine;
 }
-
+.bg-primary-dark:hover {
+  background-color: #1b4b58 !important;
+}
 .bg-danger{
   background-color: #A62412 !important;
 }

@@ -50,7 +50,7 @@ export default function Search() {
     search(searchinput)
   }
   return (
-    <div className='w-100 bg-white p-2' style={{  maxWidth: "280px", minWidth: "270px"}}>
+    <div className='w-100 bg-white px-2 pt-4' style={{  maxWidth: "280px", minWidth: "270px"}}>
       <Stack direction='horizontal' className='ms-auto'>
 
         <InputGroup className='w-100'>
@@ -84,7 +84,7 @@ export default function Search() {
 
       <div>
         <Form.Label className='fw-bolder mt-3'>
-          {isSearch ?
+          {isSearch &&
             <>
               {searchFriend !== null && searchinput !== ''?
                 <>
@@ -98,10 +98,10 @@ export default function Search() {
                 </span>
               }
             </>
-            :<></>
           }
         </Form.Label>
         {
+          searchFriend ? 
           Object.entries(searchFriend).length !== 0 &&
           <Stack direction='horizontal'>
             <Stack direction='horizontal' gap={3}>
@@ -130,6 +130,8 @@ export default function Search() {
 
             </div>
           </Stack>
+          :
+          null
         }
 
       </div>

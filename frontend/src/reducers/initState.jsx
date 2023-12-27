@@ -3,7 +3,7 @@ export const initialState = {
   loading: false,
   error: null,
 
-  
+  isLoggedIn: false,
 
   room: null,
   group_room: [],

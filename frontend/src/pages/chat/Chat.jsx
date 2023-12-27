@@ -1,19 +1,19 @@
 import { Stack} from 'react-bootstrap';
-import RoomAndUsers from './room-and-users';
 import SendMessage from './send-message';
 import Messages from './messages';
-import RoomInfo from '../../components/RoomInfo';
+import RoomInfo from './RoomInfo';
 import useAuth from '../../hooks/useAuth';
 
 import { io } from 'socket.io-client';
 import useChatroom from '../../hooks/useChatroom';
 import Default from './Default';
 import { useEffect, useState } from 'react';
+
+const host = import.meta.env.VITE_API_BASE_URL
 let socket;
 const Chat = () => {
   const { user } = useAuth()
-  const {room} = useChatroom()
-  const host = 'https://qldapm-api.onrender.com'
+  const {room, group_room, fetch_Member_In_Room, fetch_Messages_In_Room} = useChatroom()
   
   const [socket, setSocket] = useState(null);
 
@@ -40,12 +40,15 @@ const Chat = () => {
       }
     };
   }, []);
+
+  useEffect(()=>{
+    if(room !== null){
+      fetch_Messages_In_Room(room.room_id)
+    fetch_Member_In_Room(room.room_id)
+    }
+  }, [room])
   return (
     <Stack direction='horizontal' className='w-100 overflow-hidden'>
-      {/*<div>
-      
-        <RoomAndUsers />
-    </div>*/}
       {
         room !== null ?
           <>
@@ -56,7 +59,7 @@ const Chat = () => {
                 <SendMessage socket={socket} />
               </div>
             </div>
-            <RoomInfo/>
+            <RoomInfo />
           </>
           :
           <Default />

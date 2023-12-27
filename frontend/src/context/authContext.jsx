@@ -6,7 +6,11 @@ import { io } from "socket.io-client"
 const AppContext = createContext()
 const AppContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(appReducer, initialState)
-    
+    /*useEffect(() => {
+      const storedIsLoggedIn = localStorage.getItem('accessToken') === 'true';
+      console.log(storedIsLoggedIn)
+      dispatch({ type: 'SET_LOGGED_IN', payload: storedIsLoggedIn });
+    }, []);*/
     return (
         <AppContext.Provider value = {{state, dispatch}}>
             {children}

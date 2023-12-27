@@ -12,39 +12,37 @@ export default function ModalCreateGroup({ handleToggle, show }) {
 
   const [groupName, setName] = useState('')
   const [chooseUsers, setChooseUser] = useState([])
-  const [selectedFile, setSelectedFile] = useState(null);
+  
+  const [previewImage, setPreviewImage] = useState(null)
+  const [selectedImage, setSelectedImage] = useState(null)
+
   const [imageUrl, setImageUrl] = useState('');
 
   const handleCreateGroup = async (e) => {
     e.preventDefault()
-    if (selectedFile) {
+    if (selectedImage && chooseUsers.length > 0) {
       const formData = new FormData();
-      formData.append('file', selectedFile);
+      formData.append('file', selectedImage);
 
       // Gọi API để tải ảnh lên và nhận URL
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-
-        // Gọi API để tải ảnh lên và nhận URL
-        fetch('https://qldapm-api.onrender.com/upload/image', {
-          method: 'POST',
-          body: formData,
+      fetch('https://qldapm-api.onrender.com/upload/image', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const path = `https://qldapm-api.onrender.com/${data.path}`
+          createChatroom(chooseUsers, groupName, path)
+          handleToggle()
         })
-          .then((response) => response.json())
-          .then((data) => {
-            alert(data.path)
-            const path = `https://qldapm-api.onrender.com/${data.path}`
-            alert(path)
-            setImageUrl(path)
-          })
-          .catch((error) => {
-            console.error('Error uploading image:', error);
-          });
-      }
+        .catch((error) => {
+          console.error('Error uploading image:', error);
+          alert(error)
+        });
     }
-    createChatroom(chooseUsers, groupName, imageUrl)
-    handleToggle()
+    else {
+      alert('You should add member')
+    }
   }
   const handleOptionChange = (item) => {
     if (chooseUsers.includes(item)) {
@@ -53,9 +51,20 @@ export default function ModalCreateGroup({ handleToggle, show }) {
       setChooseUser([...chooseUsers, item]);
     }
   };
+
+
+
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
+    const file = e.target.files[0]
+
+    if(file){
+      setSelectedImage(file)
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result)
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   return (
@@ -71,13 +80,8 @@ export default function ModalCreateGroup({ handleToggle, show }) {
       <Modal.Header className=' mx-5 h1 d-flex flex-column' style={{ color: "#1687A7" }}>
         <Modal.Title>Create a Group Chat</Modal.Title>
 
-        <InputGroup className="mb-1 mt-3">
-          <div variant="outline-secondary" id="button-addon1" className='rounded-circle bg-primary-gray text-center px-2'>
-            {
-              imageUrl &&
-              <Image width={20} height={20} roundedCircle src={imageUrl} />
-            }
-            <div>
+        <div className="w-100 mb-1 mt-3  d-flex justify-content-center  align-items-center">
+            <div className='rounded-circle'>
 
               <input
                 type="file"
@@ -85,22 +89,26 @@ export default function ModalCreateGroup({ handleToggle, show }) {
                 style={{ display: 'none', visibility: 'none' }}
                 onChange={handleImageChange}
               />
-              <label id="custom-file-input" htmlFor="custom-file-input">
-                <Image src={UploadingImage} width={20} height={20} roundedCircle />
+              <label id="custom-file-input" htmlFor="custom-file-input" className='mb-2'>
+                {
+                  previewImage
+                  ?
+                  <Image src={previewImage} width={50} height={50} roundedCircle className="text-center" />
+                  :
+                  <Image src={UploadingImage} width={50} roundedCircle className="bg-primary-gray border-primary-main p-2" />
+                }
               </label>
 
-            </div>
           </div>
           <Form.Control
-            aria-label="Example text with button addon"
-            aria-describedby="basic-addon1"
+            required
             value={groupName}
             name='groupName'
             onChange={(e) => setName(e.target.value)}
             placeholder='Group Chat`s Name...'
             className='rounded-pill ms-3 border-dark p-2'
           />
-        </InputGroup>
+        </div>
       </Modal.Header>
 
       <Modal.Body>

@@ -4,14 +4,12 @@ import { Stack, Row, Image, Container } from 'react-bootstrap'
 
 import MessagaesIcon from './../assets/images/room.png'
 import FriendsIcon from './../assets/images/friend.png'
-import WaitingIcon from './../assets/images/waiting.png'
-import DeletedIcon from './../assets/images/deleted.png'
 import SettingIcon from './../assets/images/setting.png'
 
 const sidebar = [
   { path: `/messages`, icon: MessagaesIcon },
   { path: '/friends', icon: FriendsIcon },
-  { path: '/setting/', icon: SettingIcon },
+  { path: '/settings', icon: SettingIcon },
 ]
 const Sidebar = () => {
   const location = useLocation()

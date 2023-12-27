@@ -10,7 +10,7 @@ const useChatroom = () => {
     
     const fetchListChatrooms = async () =>{
       try {
-        const response = await fetch(baseURL + `chat-room/${user.user_id}/list`); // Thay đổi URL thành API bạn đang sử dụng
+        const response = await fetch(baseURL + `/chat-room/${user.user_id}/list`); // Thay đổi URL thành API bạn đang sử dụng
         const result = await response.json();
         if(result.data.list.length > 0)
         {
@@ -24,7 +24,7 @@ const useChatroom = () => {
 
     const createChatroom = async (user_id, name, avatar) => {
       try {
-        const response = await fetch(baseURL + `chat-room/${state.user.user_id}/create`, {
+        const response = await fetch(baseURL + `/chat-room/${state.user.user_id}/create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -35,18 +35,18 @@ const useChatroom = () => {
         if (response.ok) {
           const responseData = await response.json();
           alert('Success')
+          fetchListChatrooms()
         } else {
           const errorData = await response.json();
-          alert(errorData.message)
         }
       } catch (error) {
         console.log(error)
       }
     }
     const join_room = async (room) => {
-      console.log(room)
+     if(room){
       try {
-        const response = await fetch(baseURL + `message/${state.user.user_id}/list?page=1&limit=20&room_id=${room.room_id}`); // Thay đổi URL thành API bạn đang sử dụng
+        const response = await fetch(baseURL + `/message/${state.user.user_id}/list?page=1&limit=20&room_id=${room.room_id}`); // Thay đổi URL thành API bạn đang sử dụng
         const result = await response.json();
 
         if(result.data.list.length > 0)
@@ -61,13 +61,14 @@ const useChatroom = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-      dispatch(joinRoom(room))
+     }
       
+     dispatch(joinRoom(room))
     }
 
     const add_member = async (room_id, user_id_add) => {
       try {
-        const response = await fetch(baseURL + `chat-room/${state.user.user_id}/add_member`, {
+        const response = await fetch(baseURL + `/chat-room/${state.user.user_id}/add_member`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -89,7 +90,7 @@ const useChatroom = () => {
     const fetch_Messages_In_Room = async (room) =>{
       
       try {
-        const response = await fetch(baseURL + `message/${state.user.user_id}/list?page=1&limit=20&room_id=${room}`); // Thay đổi URL thành API bạn đang sử dụng
+        const response = await fetch(baseURL + `/message/${state.user.user_id}/list?page=1&limit=20&room_id=${room}`); // Thay đổi URL thành API bạn đang sử dụng
         const result = await response.json();
         console.log('result messages', result)
         if(result.data.list.length > 0)
@@ -106,7 +107,7 @@ const useChatroom = () => {
 
     const fetch_Member_In_Room = async (room) => {
       try {
-        const response = await fetch(baseURL + `chat-room/${state.user.user_id}/list-member?page=1&limit=20&room_id=${room}`); 
+        const response = await fetch(baseURL + `/chat-room/${state.user.user_id}/list-member?page=1&limit=20&room_id=${room}`); 
         
         if (response.ok) {
           const result = await response.json();
@@ -114,29 +115,29 @@ const useChatroom = () => {
           
         } else {
           const errorData = await response.json();
-          alert(errorData)
         }
       } catch (error) {
         console.log(error)
       }
       
     }
-    const update_Chat_room = async (room, name, avatar) => {
+    const update_Chat_room = async (room_id, name, avatar) => {
+      
       try {
-        const response = await fetch(baseURL + `chat-room/${state.user.user_id}/update`, {
+        const response = await fetch(baseURL + `/chat-room/${state.user.user_id}/update`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ room, name, avatar }),
+          body: JSON.stringify({ room_id, name, avatar }),
+    
         });
   
         if (response.ok) {
-          
-          
+          fetchListChatrooms()
+          alert('Success')
         } else {
           const errorData = await response.json();
-          alert(errorData)
         }
       } catch (error) {
         console.log(error)
@@ -145,7 +146,7 @@ const useChatroom = () => {
     const leave_Chat_room = async (id) => {
       const room_id = state.room.room_id
       try {
-        const response = await fetch(baseURL + `chat-room/${id}/leave_room`, {
+        const response = await fetch(baseURL + `/chat-room/${id}/leave_room`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -158,7 +159,6 @@ const useChatroom = () => {
           
         } else {
           const errorData = await response.json();
-          alert(errorData.message)
         }
       } catch (error) {
         alert(error)

@@ -20,17 +20,13 @@ const Header = () => {
   const [isOpenProfile, setOpenProfile] = useState(false);
   const toggleOpen = () => setOpenProfile(!isOpenProfile)
   
-  useEffect(()=>{
-    console.log(user)
-  }, [user])
   return (
   <div className='fixed-top'
   style={{marginLeft: "70px"}}>
     
       <Stack
       direction="horizontal" gap={3}
-      className=' bg-primary-main px-4'
-      style={{}}>
+      className=' bg-primary-main px-4'>
         
         <div className="p-2 d-flex align-items-center">
           <Image width={30} height={30} src={Logo} className='me-2'/>
@@ -71,7 +67,7 @@ const Header = () => {
         </div>
       </Stack>
       {isOpenProfile && <ModalProfile handleToggle={toggleOpen} show={isOpenProfile}/>}
-      <Outlet/>
+      
   </div>
   )
 }
