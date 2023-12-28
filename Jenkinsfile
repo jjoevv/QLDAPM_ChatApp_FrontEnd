@@ -33,6 +33,7 @@ pipeline {
             steps {
                 dir('frontend') {
                     script {
+                        sh 'cat .env'
                         sh 'npm run build'
                     }
                 }
