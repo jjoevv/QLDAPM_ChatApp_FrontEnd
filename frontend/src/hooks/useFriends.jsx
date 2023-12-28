@@ -160,7 +160,7 @@ const useFriends = () => {
     listFriends: state.listFriends,
     listRequests: state.listRequests,
     listSends: state.listSends,
-    searchFriend: state.searchFriend,
+    searchResult: state.searchFriend,
     getListFriends,
     acceptFriend,
     unAccept,

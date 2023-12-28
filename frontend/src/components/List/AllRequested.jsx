@@ -7,7 +7,7 @@ import DenyIcon from './../../assets/images/deny.png'
 import useFriends from '../../hooks/useFriends'
 import useChatroom from '../../hooks/useChatroom'
 import useAuth from '../../hooks/useAuth'
-import { isUserIdExistInChatRoom } from '../../hooks/useCheck'
+import { areUsersInSameRoom } from '../../hooks/useCheck'
 
 //tab2 - tất cả bạn bè và lời mời kết bạn
 const AllRequested = () => {
@@ -17,11 +17,13 @@ const AllRequested = () => {
   const handleAccept = (user_id) => {
     const users = [user_id, user.user_id]
     acceptFriend(user_id)
-    if(!isUserIdExistInChatRoom(allchatrooms, user_id)){
+    if(!areUsersInSameRoom(allchatrooms, user_id, user.user_id)){
+      alert(create)
       createChatroom(users, 'single', '')
     }
     
   }
+
   useEffect(()=>{
     getListFriends(1)
   }, [listRequests])

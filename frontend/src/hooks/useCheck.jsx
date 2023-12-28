@@ -58,9 +58,25 @@ export function downloadFileFromUrl(fileUrl, fileName) {
     .catch(error => console.error('Error downloading file:', error));
 }
 
-export const isUserIdExistInChatRoom = (list, userIdToCheck) => {
+function isUserIdExistInChatRoom (room, userId1, userId2) {
   // Kiểm tra xem userIdToCheck có tồn tại trong danh sách users của mỗi phòng hay không
-  const check = room.users.some(user => user.user_id === userIdToCheck);
-  alert(userIdToCheck)
-  alert(check)
+ 
+  const user1Exists = room.users.some(user => user.user_id === userId1);
+  const user2Exists = room.users.some(user => user.user_id === userId2);
+
+  // Trả về true nếu cả hai user_id đều tồn tại trong danh sách
+  return user1Exists && user2Exists;
+ 
+}
+
+export const areUsersInSameRoom = (roomList, userId1, userId2) =>{
+  let check = false
+  for (const room of roomList) {
+    const usersInSameRoom = isUserIdExistInChatRoom(room, userId1, userId2);
+    
+    if (usersInSameRoom && room.users.length === 2) {
+      check = true
+    }
+  }
+  return check
 }

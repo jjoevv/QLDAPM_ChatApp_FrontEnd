@@ -1,8 +1,6 @@
 import { useReducer, useContext, createContext, useEffect } from "react"
 import appReducer from "../reducers/reducer"
 import { initialState } from "../reducers/initState"
-import { io } from "socket.io-client"
-
 const AppContext = createContext()
 const AppContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(appReducer, initialState)
