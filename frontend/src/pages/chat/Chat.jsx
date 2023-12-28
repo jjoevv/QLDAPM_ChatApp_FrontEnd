@@ -1,5 +1,5 @@
 import { Stack} from 'react-bootstrap';
-import SendMessage from './send-message';
+import SendMessage from './SendMessage';
 import Messages from './messages';
 import RoomInfo from './RoomInfo';
 import useAuth from '../../hooks/useAuth';

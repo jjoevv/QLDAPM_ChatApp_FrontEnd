@@ -108,7 +108,6 @@ const SendMessage = ({ socket }) => {
       }
     }
     else {
-      console.log('GUI MESSAGE')
       sendMessage(message)
     }
   }
@@ -133,8 +132,6 @@ const SendMessage = ({ socket }) => {
         room_id: room.room_id,
       }
       socket.emit('message_text', msg)
-      console.log(socket)
-      console.log('MESSGAE', msg)
     }
     setMessage('')
     setPreviewImages([])
