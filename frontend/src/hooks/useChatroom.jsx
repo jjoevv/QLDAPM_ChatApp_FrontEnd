@@ -34,7 +34,6 @@ const useChatroom = () => {
   
         if (response.ok) {
           const responseData = await response.json();
-          alert('Success')
           fetchListChatrooms()
         } else {
           const errorData = await response.json();
@@ -134,7 +133,6 @@ const useChatroom = () => {
   
         if (response.ok) {
           fetchListChatrooms()
-          alert('Success')
         } else {
           const errorData = await response.json();
         }

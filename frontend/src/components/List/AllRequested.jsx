@@ -7,7 +7,8 @@ import DenyIcon from './../../assets/images/deny.png'
 import useFriends from '../../hooks/useFriends'
 import useChatroom from '../../hooks/useChatroom'
 import useAuth from '../../hooks/useAuth'
-import { areUsersInSameRoom } from '../../hooks/useCheck'
+import avatarIcon from '../../assets/images/profile.png'
+import { areUsersInSameRoom, isImageFileNameValid } from '../../hooks/useCheck'
 
 //tab2 - tất cả bạn bè và lời mời kết bạn
 const AllRequested = () => {
@@ -16,9 +17,9 @@ const AllRequested = () => {
   const {createChatroom, allchatrooms} = useChatroom()
   const handleAccept = (user_id) => {
     const users = [user_id, user.user_id]
-    acceptFriend(user_id)
+    acceptFriend(user_id) 
     if(!areUsersInSameRoom(allchatrooms, user_id, user.user_id)){
-      alert(create)
+      
       createChatroom(users, 'single', '')
     }
     
@@ -41,7 +42,13 @@ const AllRequested = () => {
 
             >
               <Stack direction='horizontal' className='w-100'>
-                <Image src='' width={50} height={50} roundedCircle className='bg-black me-3' />
+              {
+                    isImageFileNameValid(user.avatar)
+                      ?
+                      <Image width={50} height={50} roundedCircle className='bg-black me-3' src={user.avatar} />
+                      :
+                      <Image width={50} height={50} roundedCircle className='bg-black me-3' src={avatarIcon} />
+                  }
                 <div className='color-primary-main fw-bold me-5' style={{ fontSize: "15px" }}>
                   {user.username}
                 </div>

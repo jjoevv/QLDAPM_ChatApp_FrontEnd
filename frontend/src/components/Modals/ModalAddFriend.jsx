@@ -7,8 +7,8 @@ import useFriends from '../../hooks/useFriends'
 import { isImageFileNameValid } from '../../hooks/useCheck'
 
 export default function ModalAddFriend({ handleToggle, show }) {
-    const { search, searchFriend, sendRequest } = useFriends()
-
+    const { search, searchResult, sendRequest } = useFriends()
+    
     const [searchinput, setInput] = useState("")
     const [isRequested, setRequest] = useState(false)
     const [isSearch, setSearch] = useState(false)
@@ -16,7 +16,7 @@ export default function ModalAddFriend({ handleToggle, show }) {
     const handleSendRequest = async (e) => {
         e.preventDefault();
         setRequest(!isRequested)
-        sendRequest(searchFriend.user_id)
+        sendRequest(searchResult.user_id)
 
     }
     const handleInputChange = (e) => {
@@ -54,7 +54,7 @@ export default function ModalAddFriend({ handleToggle, show }) {
                         <Form.Label className='fw-bolder mt-3'>
                             {isSearch &&
                                 <>
-                                    {searchFriend !== null ?
+                                    {searchResult !== null ?
                                         <>
                                             <span>
                                                 You may know:
@@ -69,19 +69,19 @@ export default function ModalAddFriend({ handleToggle, show }) {
                             }
                         </Form.Label>
                         {
-                            Object.entries(searchFriend).length !== 0 &&
+                            Object.entries(searchResult).length !== 0 &&
                             <Stack direction='horizontal'>
                                 <Stack direction='horizontal' gap={3}>
                                     {
-                                        isImageFileNameValid(searchFriend.avatar)
+                                        isImageFileNameValid(searchResult.avatar)
                                             ?
-                                            <Image src={searchFriend.avatar} roundedCircle style={{ width: '40px', height: '40px' }} />
+                                            <Image src={searchResult.avatar} roundedCircle style={{ width: '40px', height: '40px' }} />
                                             :
                                             <Image src={Avatar} roundedCircle style={{ width: '40px', height: '40px' }} />
                                     }
 
                                     <div>
-                                        <h5>{searchFriend.username}</h5>
+                                        <h5>{searchResult.username}</h5>
                                     </div>
                                 </Stack>
 

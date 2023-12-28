@@ -44,6 +44,7 @@ const appReducer = (state, action) => {
         case actionTypes.REGISTER_SUCCESS:
             return {
                 ...state,
+                user: action.payload,
                 loading: false,
                 error: null,
             };

@@ -3,7 +3,6 @@ import { useAppContext } from '../context/authContext'
 import { fetchFriends, fetchRequests, fetchSends, searchFriend } from '../actions/actions'
 
 import { baseURL } from './API'
-import useChatroom from './useChatroom'
 
 const useFriends = () => {
   const { state, dispatch } = useAppContext()
@@ -125,7 +124,7 @@ const useFriends = () => {
 
       } else {
         const errorData = await response.json();
-        dispatch(loginFailure(errorData.message));
+        dispatch(searchFriend({}))
       }
     } catch (error) {
       

@@ -28,14 +28,13 @@ function Register({handleToggle, show, setShow, setSuccess}) {
         e.preventDefault(); 
         console.log(account)
         handleRegister(account.email, account.username, account.password)
+        
         if(error){
             console.log(error)
-                    
-            setSuccess(false) 
         }
         else {
             setShow(false)          
-            setSuccess(true) 
+           setSuccess(true) 
         }
     }
 
@@ -54,7 +53,7 @@ function Register({handleToggle, show, setShow, setSuccess}) {
           
           <Form onSubmit={handleSignUp} className="w-75 mx-auto">
             {!isRegisterSuccess && <div style={{color: "red", fontSize: '14px', margin: '0px 0px 10px 10px'}} className="text-danger">{error}</div>}
-            
+            {error && <span className="text-danger">{error}</span>}
                 <Form.Group className="mb-2">
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Fullname:</Form.Label>
                     <Form.Control type="text" value={account.username} name='username' onChange={handleInputChange} className='rounded-pill border-1 border-black p-2' size="sm"  required/>
@@ -80,7 +79,7 @@ function Register({handleToggle, show, setShow, setSuccess}) {
                 </Form.Group>
                 <Form.Group className="mb-2">
                     <Form.Label className="fw-bolder" style={{fontSize: "14px"}}>Confirm Password:</Form.Label>
-                    <Form.Control type="text" name="confirmpassword" onChange={handleInputChange}  rows={1}  className='rounded-pill border-1 border-black' size="sm" required/>
+                    <Form.Control type="password" name="confirmpassword" onChange={handleInputChange}  rows={1}  className='rounded-pill border-1 border-black  p-2' size="sm" required/>
                     
                 </Form.Group>
                     

@@ -1,6 +1,6 @@
 
 import { useAppContext } from '../context/authContext';
-import { loginRequest, loginSuccess, loginFailure, logoutUser, registerRequest, updateProfile } from '../actions/actions';
+import { loginRequest, loginSuccess, loginFailure, logoutUser, registerRequest, updateProfile, registerFailure, registerSuccess } from '../actions/actions';
 
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from './useLocalStorage';
@@ -48,7 +48,7 @@ const useAuth = () => {
 
   const handleRegister = async (email, username, password) => {
     dispatch(registerRequest())
-    const avatar = ''
+    const avatar = 'avatar'
     try {
       const response = await fetch(baseURL + '/user/create', {
         method: 'POST',
@@ -59,15 +59,13 @@ const useAuth = () => {
       });
 
       if (response.ok) {
-        const userData = await response.json();
-        dispatch(loginSuccess(userData));
-        setRegister(true)
+        handleLogin(email, password)
       } else {
         const errorData = await response.json();
-        dispatch(loginFailure(errorData.message));
+        dispatch(registerFailure(errorData.message));
       }
     } catch (error) {
-      dispatch(loginFailure('Something failed'));
+      
     }
   }
 

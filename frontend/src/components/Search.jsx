@@ -13,10 +13,10 @@ import ModalAddFriend from './Modals/ModalAddFriend'
 import ModalCreateGroup from './Modals/ModalCreateGroup'
 import useFriends from '../hooks/useFriends'
 import { isImageFileNameValid, userExistInList } from '../hooks/useCheck'
-import { useAppContext } from '../context/authContext'
+
 
 export default function Search() {
-  const { searchFriend, search, listFriends, listSends, sendRequest, getListFriends } = useFriends()
+  const { searchResult, search, listFriends, listSends, sendRequest, getListFriends } = useFriends()
   const [isSearch, setSearch] = useState(false)
   const [searchinput, setInput] = useState("")
 
@@ -46,9 +46,14 @@ export default function Search() {
   }
 
   const handleSearch = (e) => {
-    
     search(searchinput)
   }
+
+  useEffect(()=>{
+    if(isOpenAddFriend === false || isOpenCreateGroup ||false){
+      search('')
+    }
+  }, [isOpenAddFriend, isOpenCreateGroup])
   return (
     <div className='w-100 bg-white px-2 pt-4' style={{  maxWidth: "280px", minWidth: "270px"}}>
       <Stack direction='horizontal' className='ms-auto'>
@@ -86,7 +91,7 @@ export default function Search() {
         <Form.Label className='fw-bolder mt-3'>
           {isSearch &&
             <>
-              {searchFriend !== null && searchinput !== ''?
+              {searchResult !== null && searchinput !== ''?
                 <>
                   <span>
                     You may know:
@@ -101,33 +106,33 @@ export default function Search() {
           }
         </Form.Label>
         {
-          searchFriend ? 
-          Object.entries(searchFriend).length !== 0 &&
+          searchResult ? 
+          Object.entries(searchResult).length !== 0 &&
           <Stack direction='horizontal'>
             <Stack direction='horizontal' gap={3}>
             {
-                  isImageFileNameValid(searchFriend.avatar)
+                  isImageFileNameValid(searchResult.avatar)
                   ?
-                  <Image width={40} height={40} roundedCircle src={searchFriend.avatar}/>
+                  <Image width={40} height={40} roundedCircle src={searchResult.avatar}/>
                   :
                   <Image width={40} height={40} roundedCircle src={avatarIcon}/>
                 }
               <div>
-                <h5>{searchFriend.username}</h5>
+                <h5>{searchResult.username}</h5>
               </div>
             </Stack>
 
             <div xs={1} className='px-0 align-self-center h6 ms-auto' >
-              {userExistInList(searchFriend.user_id, listFriends) ?
+              {userExistInList(searchResult.user_id, listFriends) ?
                 <></>
                 :
                 <>
                   {
-                    userExistInList(searchFriend.user_id, listSends)
+                    userExistInList(searchResult.user_id, listSends)
                       ?
                       <span>Requested send</span>
                       :
-                      <Button onClick={() => sendRequest(searchFriend.user_id)} style={{ backgroundColor: "white", marginLeft: "-15px" }} className='border-0'>
+                      <Button onClick={() => sendRequest(searchResult.user_id)} style={{ backgroundColor: "white", marginLeft: "-15px" }} className='border-0'>
                         <Image src={AddIcon} style={{ width: '30px', height: '30px' }} />
                       </Button>
                   }

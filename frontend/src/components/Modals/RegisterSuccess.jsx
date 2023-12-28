@@ -3,6 +3,7 @@ import { Button, Modal, Image } from 'react-bootstrap';
 
 import SuccessIcon from './../../assets/images/success.png'
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegisterSuccess({handleToggle, show}) {
   const {user, handleLogin} =useAuth()
