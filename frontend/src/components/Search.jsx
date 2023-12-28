@@ -8,15 +8,14 @@ import { InputGroup, Form, Button, Image, Row, Col, Stack } from 'react-bootstra
 import AddIcon from "./../assets/images/add.png"
 import SearchIcon from "./../assets/images/search.png"
 import GroupIcon from "./../assets/images/group.png"
-
+import avatarIcon from './../assets/images/profile.png'
 import ModalAddFriend from './Modals/ModalAddFriend'
 import ModalCreateGroup from './Modals/ModalCreateGroup'
 import useFriends from '../hooks/useFriends'
-import { userExistInList } from '../hooks/useCheck'
+import { isImageFileNameValid, userExistInList } from '../hooks/useCheck'
 import { useAppContext } from '../context/authContext'
 
 export default function Search() {
-  const {dispatch} = useAppContext()
   const { searchFriend, search, listFriends, listSends, sendRequest, getListFriends } = useFriends()
   const [isSearch, setSearch] = useState(false)
   const [searchinput, setInput] = useState("")
@@ -106,7 +105,13 @@ export default function Search() {
           Object.entries(searchFriend).length !== 0 &&
           <Stack direction='horizontal'>
             <Stack direction='horizontal' gap={3}>
-              <Image roundedCircle style={{ width: '40px', height: '40px' }} />
+            {
+                  isImageFileNameValid(searchFriend.avatar)
+                  ?
+                  <Image width={40} height={40} roundedCircle src={searchFriend.avatar}/>
+                  :
+                  <Image width={40} height={40} roundedCircle src={avatarIcon}/>
+                }
               <div>
                 <h5>{searchFriend.username}</h5>
               </div>
