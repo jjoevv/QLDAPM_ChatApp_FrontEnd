@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('phat-aws-cred').accessKey
-        AWS_SECRET_ACCESS_KEY = credentials('phat-aws-cred').secretKey
+        AWS_CREDENTIALS_ID = "phat-aws-cred"
         AWS_DEFAULT_REGION    = 'ap-southeast-1'
         S3_BUCKET_NAME        = 'qldapm-do-an-1'
     }
@@ -43,8 +42,11 @@ pipeline {
         stage('Deploy to S3') {
             steps {
                 script {
-                    def awsCommand = """aws s3 sync frontend/dist s3://${S3_BUCKET_NAME}/"""
-                    sh awsCommand
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_CREDENTIALS_ID}"]]){
+                        sh """
+                        aws s3 sync frontend/dist s3://${S3_BUCKET_NAME}/
+                        """
+                    }
                 }
             }
         }
